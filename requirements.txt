@@ -1,0 +1,17 @@
+Flask==3.0.3
+Flask-Cors==4.0.0
+Flask-Migrate==4.0.5
+Flask-Login==0.6.3
+Flask-Mail==0.9.1
+Flask-WTF==1.2.1
+Flask-SQLAlchemy==3.1.1
+
+SQLAlchemy==2.0.32
+Werkzeug==3.0.3
+itsdangerous==2.2.0
+python-dotenv==1.0.1
+python-slugify==8.0.4
+psutil==6.0.0
+requests==2.32.3
+gunicorn==23.0.0
+bcrypt==4.2.0

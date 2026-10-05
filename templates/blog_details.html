@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+{% block title %}{{ blog.title }} - CJONYX Blog{% endblock %}
+{% block content %}
+
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    primary: '#022c22',
+                    secondary: '#10b981',
+                    light: '#f0fdf4'
+                },
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif']
+                }
+            }
+        }
+    }
+</script>
+
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        overflow-x: hidden;
+    }
+
+    .blog-detail-hero {
+        background: linear-gradient(135deg, #022c22 0%, #10b981 100%);
+        padding-top: clamp(4rem, 8vw, 8rem);
+        padding-bottom: clamp(2rem, 6vw, 4rem);
+    }
+
+    .article-content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        color: #111827;
+    }
+
+    .article-content p { margin-bottom: 1.5rem; line-height: 1.75; }
+    .article-content h2 { font-size: clamp(1.4rem, 3vw, 1.8rem); font-weight: 700; margin: 2.5rem 0 1.5rem 0; color: #022c22; }
+    .article-content h3 { font-size: clamp(1.2rem, 2.5vw, 1.4rem); font-weight: 600; margin: 2rem 0 1rem 0; color: #022c22; }
+    .article-content blockquote { border-left: 4px solid #10b981; padding-left: 1.25rem; margin: 2rem 0; font-style: italic; color: #4b5563; }
+
+    .tag { display:inline-block; padding:0.35rem 0.75rem; background:#f0fdf4; color:#022c22; border-radius:50px; font-size:0.75rem; font-weight:500; }
+
+    .author-card { background:white; border-radius:16px; padding:clamp(1.2rem, 4vw, 2rem); box-shadow:0 10px 30px rgba(0,0,0,0.08); }
+</style>
+
+<!-- Hero -->
+
+<section class="blog-detail-hero">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl mx-auto text-center text-white">
+            <div class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-white text-primary font-medium mb-6">
+                {{ blog.category or 'General' }}
+            </div>
+
+```
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 px-2">{{ blog.title }}</h1>
+
+        <div class="flex flex-wrap items-center justify-center gap-4 mb-8">
+            <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full overflow-hidden mr-3">
+                    <img src="{{ url_for('static', filename='images/shula.jpeg') }}">
+                </div>
+                <span>{{ blog.author_name or 'Anonymous' }}</span>
+            </div>
+
+            <div class="flex items-center">
+                <i class="far fa-clock mr-2"></i>
+                <span>{{ blog.created_at.strftime('%B %d, %Y') }}</span>
+            </div>
+        </div>
+
+        <a href="{{ url_for('blog') }}" class="inline-flex items-center px-4 py-2 bg-white/20 text-white rounded-lg">
+            <i class="fas fa-arrow-left mr-2"></i> Back to Blog
+        </a>
+    </div>
+</div>
+```
+
+</section>
+
+<!-- Content -->
+
+<section class="py-12 sm:py-16">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+
+<!-- Main -->
+
+<div class="w-full lg:col-span-8">
+
+<article class="bg-white rounded-2xl shadow-lg">
+
+{% if blog.image_url %}
+
+<div class="w-full aspect-video">
+    <img src="{{ blog.image_url }}" class="w-full h-full object-cover">
+</div>
+{% endif %}
+
+<div class="p-6 sm:p-8">
+
+{% if blog.summary %}
+
+<div class="mb-6">
+    <p class="text-base sm:text-lg font-medium text-gray-600">{{ blog.summary }}</p>
+</div>
+{% endif %}
+
+<div class="article-content">
+    {{ blog.content|safe }}
+</div>
+
+<div class="flex flex-col md:flex-row md:items-center gap-4 mt-12 pt-8 border-t border-gray-100">
+
+{% if blog.tags %}
+
+<div class="flex flex-wrap items-center gap-2">
+    <span class="text-gray-600 mr-2">Tags:</span>
+    {% for tag in blog.tags.split(',') %}
+        {% if tag.strip() %}
+        <span class="tag">{{ tag.strip() }}</span>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="social-share flex items-center gap-2 md:ml-auto">
+    <span class="text-gray-600 mr-2">Share:</span>
+    <button onclick="shareOnFacebook()"><i class="fab fa-facebook-f"></i></button>
+    <button onclick="shareOnTwitter()"><i class="fab fa-twitter"></i></button>
+    <button onclick="shareOnLinkedIn()"><i class="fab fa-linkedin-in"></i></button>
+    <button onclick="copyLink()"><i class="fas fa-link"></i></button>
+</div>
+
+</div>
+</div>
+</article>
+
+<!-- Author -->
+
+<div class="author-card mt-12">
+<div class="flex flex-col md:flex-row items-center">
+<div class="w-24 h-24 rounded-full overflow-hidden mb-4 md:mb-0 md:mr-6">
+<img src="{{ url_for('static', filename='images/shula.jpeg') }}">
+</div>
+<div>
+<h3 class="text-xl font-bold text-primary">{{ blog.author_name or 'Anonymous' }}</h3>
+<p class="text-secondary font-medium mb-3">{{ blog.author_title or 'Author' }}</p>
+<p class="text-gray-600">{{ blog.author_name or 'This author' }} shares valuable insights and expertise to help businesses and organizations grow.</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- Sidebar -->
+
+<div class="w-full lg:col-span-4">
+
+<div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+<h3 class="text-xl font-bold text-primary mb-4">Search Articles</h3>
+<div class="relative">
+<input type="text" placeholder="Search..." class="w-full px-4 py-3 border border-gray-200 rounded-lg">
+<button class="absolute right-2 top-2 bg-secondary text-white p-2 rounded-lg"><i class="fas fa-search"></i></button>
+</div>
+</div>
+
+<div class="bg-white rounded-2xl shadow-lg p-6">
+<h3 class="text-xl font-bold text-primary mb-4">Popular Tags</h3>
+<div class="flex flex-wrap gap-2">
+<a href="#" class="tag">Business</a>
+<a href="#" class="tag">Sustainability</a>
+<a href="#" class="tag">Healthcare</a>
+<a href="#" class="tag">Community</a>
+<a href="#" class="tag">Innovation</a>
+<a href="#" class="tag">Technology</a>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<script>
+function shareOnFacebook(){window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(location.href)}`)}
+function shareOnTwitter(){window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(location.href)}`)}
+function shareOnLinkedIn(){window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(location.href)}`)}
+function copyLink(){navigator.clipboard.writeText(location.href);alert('Link copied')}
+</script>
+
+{% endblock %}

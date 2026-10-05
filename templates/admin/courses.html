@@ -1,0 +1,104 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}CJONYX - Manage Courses{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-6">
+                <div class="flex items-center space-x-4">
+                    <a href="{{ url_for('admin_dashboard') }}" class="text-gray-600 hover:text-primary">
+                        <i class="fas fa-arrow-left text-xl"></i>
+                    </a>
+                    <h1 class="text-3xl font-bold text-gray-900">Course Management</h1>
+                </div>
+                <a href="{{ url_for('admin_new_course') }}" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-all">
+                    <i class="fas fa-plus mr-2"></i>New Course
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="mb-6">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else category }} bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded mb-2" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Courses Grid -->
+        {% if courses %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for course in courses %}
+                    <div class="bg-white rounded-lg shadow hover:shadow-lg transition-all">
+                        {% if course.thumbnail_url %}
+                            <img src="{{ course.thumbnail_url }}" alt="{{ course.title }}" class="w-full h-48 object-cover rounded-t-lg">
+                        {% else %}
+                            <div class="w-full h-48 bg-gray-200 rounded-t-lg flex items-center justify-center">
+                                <i class="fas fa-play-circle text-6xl text-gray-400"></i>
+                            </div>
+                        {% endif %}
+                        
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="px-2 py-1 text-xs rounded {{ 'bg-green-100 text-green-800' if course.published else 'bg-red-100 text-red-800' }}">
+                                    {{ 'Published' if course.published else 'Draft' }}
+                                </span>
+                                {% if course.category %}
+                                    <span class="px-2 py-1 text-xs rounded bg-blue-100 text-blue-800">
+                                        {{ course.category }}
+                                    </span>
+                                {% endif %}
+                            </div>
+                            
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ course.title }}</h3>
+                            <p class="text-gray-600 text-sm mb-3">{{ course.description[:100] + '...' if course.description|length > 100 else course.description }}</p>
+                            
+                            <div class="flex items-center text-sm text-gray-500 mb-4">
+                                <i class="fas fa-clock mr-1"></i>
+                                <span>{{ course.duration or 'Duration not set' }}</span>
+                                <span class="mx-2">•</span>
+                                <i class="fas fa-calendar mr-1"></i>
+                                <span>{{ course.created_at.strftime('%Y-%m-%d') }}</span>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <a href="{{ course.youtube_url }}" target="_blank" class="text-red-600 hover:text-red-800">
+                                    <i class="fab fa-youtube mr-1"></i>Watch on YouTube
+                                </a>
+                                
+                                <div class="flex items-center space-x-2">
+                                    <a href="{{ url_for('admin_edit_course', course_id=course.id) }}" class="text-green-600 hover:text-green-800" title="Edit Course">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form method="POST" action="{{ url_for('admin_delete_course', course_id=course.id) }}" class="inline" onsubmit="return confirm('Are you sure you want to delete this course?')">
+                                        <button type="submit" class="text-red-600 hover:text-red-800" title="Delete Course">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-12">
+                <i class="fas fa-play-circle text-6xl text-gray-300 mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">No courses yet</h3>
+                <p class="text-gray-500 mb-6">Get started by adding your first course video.</p>
+                <a href="{{ url_for('admin_new_course') }}" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-all">
+                    <i class="fas fa-plus mr-2"></i>Add First Course
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

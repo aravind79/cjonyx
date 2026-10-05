@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% block title %}CJONYX - Sign Up{% endblock %}
+
+{% block content %}
+<section class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div>
+            <div class="mx-auto h-12 w-auto flex justify-center">
+                <img class="h-12 w-auto" src="{{ url_for('static', filename='images/Clogo.png') }}" alt="CJONYX">
+            </div>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                Create your account
+            </h2>
+            <p class="mt-2 text-center text-sm text-gray-600">
+                Or
+                <a href="{{ url_for('login') }}" class="font-medium text-primary hover:text-primary/80">
+                    sign in to your existing account
+                </a>
+            </p>
+        </div>
+        
+
+        
+        <form class="mt-8 space-y-6" method="POST" action="{{ url_for('signup') }}">
+            <div class="space-y-4">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                    <input id="username" name="username" type="text" required class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" placeholder="Choose a username">
+                </div>
+                
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
+                    <input id="email" name="email" type="email" required class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" placeholder="Enter your email address">
+                </div>
+                
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input id="password" name="password" type="password" required class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" placeholder="Create a password">
+                </div>
+                
+                <div>
+                    <label for="confirm_password" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                    <input id="confirm_password" name="confirm_password" type="password" required class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" placeholder="Confirm your password">
+                </div>
+            </div>
+
+            <div class="flex items-center">
+                <input id="terms" name="terms" type="checkbox" required class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                <label for="terms" class="ml-2 block text-sm text-gray-900">
+                    I agree to the <a href="#" class="text-primary hover:text-primary/80">Terms and Conditions</a> and <a href="#" class="text-primary hover:text-primary/80">Privacy Policy</a>
+                </label>
+            </div>
+
+            <div>
+                <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                        <i class="fas fa-user-plus h-5 w-5 text-primary/50 group-hover:text-primary/40" aria-hidden="true"></i>
+                    </span>
+                    Create Account
+                </button>
+            </div>
+            
+            <div class="text-center">
+                <a href="{{ url_for('index') }}" class="font-medium text-gray-600 hover:text-primary">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to Home
+                </a>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Modal for messages -->
+<div id="messageModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+            <div id="modalIcon" class="mx-auto flex items-center justify-center h-12 w-12 rounded-full mb-4">
+                <i id="modalIconClass" class="text-2xl"></i>
+            </div>
+            <h3 id="modalTitle" class="text-lg leading-6 font-medium text-gray-900 mb-2"></h3>
+            <div class="mt-2 px-7 py-3">
+                <p id="modalMessage" class="text-sm text-gray-500"></p>
+            </div>
+            <div class="items-center px-4 py-3">
+                <button id="modalOkButton" class="px-4 py-2 bg-primary text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Modal functionality
+    function showModal(type, title, message, callback = null) {
+        const modal = document.getElementById('messageModal');
+        const modalIcon = document.getElementById('modalIcon');
+        const modalIconClass = document.getElementById('modalIconClass');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalOkButton = document.getElementById('modalOkButton');
+        
+        // Set icon and colors based on type
+        if (type === 'success') {
+            modalIcon.className = 'mx-auto flex items-center justify-center h-12 w-12 rounded-full mb-4 bg-green-100';
+            modalIconClass.className = 'text-2xl fas fa-check text-green-600';
+        } else if (type === 'error') {
+            modalIcon.className = 'mx-auto flex items-center justify-center h-12 w-12 rounded-full mb-4 bg-red-100';
+            modalIconClass.className = 'text-2xl fas fa-times text-red-600';
+        } else {
+            modalIcon.className = 'mx-auto flex items-center justify-center h-12 w-12 rounded-full mb-4 bg-blue-100';
+            modalIconClass.className = 'text-2xl fas fa-info text-blue-600';
+        }
+        
+        modalTitle.textContent = title;
+        modalMessage.textContent = message;
+        
+        // Show modal
+        modal.classList.remove('hidden');
+        
+        // Handle OK button click
+        modalOkButton.onclick = function() {
+            modal.classList.add('hidden');
+            if (callback) callback();
+        };
+        
+        // Close modal when clicking outside
+        modal.onclick = function(event) {
+            if (event.target === modal) {
+                modal.classList.add('hidden');
+                if (callback) callback();
+            }
+        };
+    }
+    
+    // Check for flash messages on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    {% if category == 'success' %}
+                        showModal('success', 'Success!', '{{ message }}', function() {
+                            window.location.href = '{{ url_for("login") }}';
+                        });
+                    {% elif category == 'error' %}
+                        showModal('error', 'Error', '{{ message }}');
+                    {% else %}
+                        showModal('info', 'Notice', '{{ message }}');
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    });
+    
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const modal = document.getElementById('messageModal');
+            if (!modal.classList.contains('hidden')) {
+                modal.classList.add('hidden');
+            }
+        }
+    });
+</script>
+{% endblock %}

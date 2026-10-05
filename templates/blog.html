@@ -1,0 +1,310 @@
+{% extends "base.html" %}
+{% block title %}CJONYX - Blog{% endblock %}
+{% block content %}
+
+<style>
+    /* Blog specific styles */
+    .blog-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        height: 100%;
+    }
+    
+    .blog-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    }
+    
+    .blog-image {
+        position: relative;
+        overflow: hidden;
+        height: 240px;
+        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    }
+    
+    .blog-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .blog-card:hover .blog-image img {
+        transform: scale(1.05);
+    }
+    
+    .blog-category {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        background: #10b981;
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        z-index: 2;
+    }
+    
+    .blog-date {
+        color: #10b981;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+    
+    .blog-excerpt {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .blog-author {
+        display: flex;
+        align-items: center;
+        margin-top: 1.5rem;
+    }
+    
+    .author-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-right: 0.75rem;
+    }
+    
+    .author-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .author-info {
+        font-size: 0.875rem;
+    }
+    
+    .author-name {
+        font-weight: 600;
+        color: #022c22;
+    }
+    
+    .read-more {
+        color: #10b981;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
+    
+    .read-more:hover {
+        color: #022c22;
+    }
+    
+    .read-more i {
+        margin-left: 0.5rem;
+        transition: transform 0.3s ease;
+    }
+    
+    .read-more:hover i {
+        transform: translateX(4px);
+    }
+    
+    .category-filter {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+        margin-bottom: 2rem;
+    }
+    
+    .filter-btn {
+        padding: 0.5rem 1.5rem;
+        border-radius: 50px;
+        background: #f0fdf4;
+        color: #022c22;
+        border: 1px solid #022c22;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .filter-btn.active, .filter-btn:hover {
+        background: #022c22;
+        color: white;
+    }
+    
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 3rem;
+        gap: 0.5rem;
+    }
+    
+    .page-link {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        font-weight: 600;
+        color: #022c22;
+        background: white;
+        border: 1px solid #e5e7eb;
+        transition: all 0.3s ease;
+    }
+    
+    .page-link:hover, .page-link.active {
+        background: #022c22;
+        color: white;
+        border-color: #022c22;
+    }
+    
+    @media (max-width: 768px) {
+        .blog-image {
+            height: 200px;
+        }
+    }
+</style>
+
+<!-- Blog Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold text-center mb-12 text-gray-800">CJONYX Blog</h1>
+        
+        <!-- Category Filters -->
+        <div class="category-filter" data-aos="fade-up">
+            <button class="filter-btn active" data-filter="all">All Articles</button>
+            {% if blogs %}
+                {% set categories = blogs|map(attribute='category')|unique|list %}
+                {% for category in categories %}
+                    {% if category %}
+                    <button class="filter-btn" data-filter="{{ category|lower }}">{{ category|title }}</button>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <button class="filter-btn" data-filter="business">Business</button>
+                <button class="filter-btn" data-filter="environment">Environment</button>
+                <button class="filter-btn" data-filter="healthcare">Healthcare</button>
+                <button class="filter-btn" data-filter="community">Community</button>
+            {% endif %}
+        </div>
+
+        <!-- Articles Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% if blogs %}
+                {% for blog in blogs %}
+                <div class="blog-card" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 100 }}" data-category="{{ blog.category|lower }}">
+                    <div class="blog-image">
+                        {% if blog.image_url %}
+                        <img src="{{ blog.image_url }}"
+                             alt="{{ blog.title }}"
+                             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <div class="image-skeleton" style="display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;background:#e5e7eb;color:#bdbdbd;font-size:2rem;">
+                            <i class="fas fa-image" style="font-size:3rem;"></i>
+                            <span style="font-size:0.9rem;">Image not available</span>
+                        </div>
+                        {% else %}
+                        <div class="image-skeleton" style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;background:#e5e7eb;color:#bdbdbd;font-size:2rem;">
+                            <i class="fas fa-image" style="font-size:3rem;"></i>
+                            <span style="font-size:0.9rem;">No image</span>
+                        </div>
+                        {% endif %}
+                        <div class="blog-category">{{ blog.category or 'General' }}</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="blog-date">{{ blog.created_at.strftime('%B %d, %Y') }}</div>
+                        <h3 class="text-xl font-bold my-3">{{ blog.title }}</h3>
+                        <p class="blog-excerpt text-gray-600 mb-4">
+                            {% if blog.summary %}
+                                {{ blog.summary }}
+                            {% elif blog.content %}
+                                {% if blog.content|length > 150 %}
+                                    {{ blog.content[:150] }}...
+                                {% else %}
+                                    {{ blog.content }}
+                                {% endif %}
+                            {% else %}
+                                No content available.
+                            {% endif %}
+                        </p>
+                        {% if blog.author_name %}
+                        <div class="blog-author">
+                            <div class="author-avatar">
+                                <img src="{{ url_for('static', filename='images/shula.jpeg') }}" alt="{{ blog.author_name }}">
+                            </div>
+                            <div class="author-info">
+                                <div class="author-name">{{ blog.author_name }}</div>
+                                <div class="text-gray-500">{{ blog.author_title or 'Author' }}</div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <a href="{{ url_for('blog_details', blog_id=blog.id) }}" class="read-more">
+                            Read More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <!-- No Blogs Available -->
+                <div class="col-span-full text-center py-12">
+                    <div class="w-24 h-24 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-blog text-gray-400 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-600 mb-2">No Blog Posts Available</h3>
+                    <p class="text-gray-500">We're working on creating great content for you. Check back soon!</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination" data-aos="fade-up">
+            <a href="#" class="page-link"><i class="fas fa-chevron-left"></i></a>
+            <a href="#" class="page-link active">1</a>
+            <a href="#" class="page-link">2</a>
+            <a href="#" class="page-link">3</a>
+            <a href="#" class="page-link"><i class="fas fa-chevron-right"></i></a>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize AOS
+        if (typeof AOS !== 'undefined') {
+            AOS.init({
+                duration: 800,
+                once: true,
+                easing: 'ease-out-quart'
+            });
+        }
+
+        // Category filtering
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const blogCards = document.querySelectorAll('.blog-card');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                const filterValue = button.getAttribute('data-filter');
+                
+                // Show/hide blog cards based on filter
+                blogCards.forEach(card => {
+                    if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}

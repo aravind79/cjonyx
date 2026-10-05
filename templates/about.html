@@ -1,0 +1,721 @@
+{% extends "base.html" %}
+{% block title %}CJONYX - E-Courses{% endblock %}
+{% block content %}
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #022c22;
+            --secondary: #10b981;
+            --accent: #34d399;
+            --light: #f0fdf4;
+            --dark: #022c22;
+            --gray: #4a5568;
+            --white: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Hero Section */
+        .about-hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+            color: white;
+            text-align: center;
+        }
+        
+        .about-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .about-hero p {
+            font-size: 1.5rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        
+        .hero-gradient {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to top, var(--white), transparent);
+        }
+        
+        /* Story Section */
+        .story-section {
+            padding: 100px 0;
+            background: var(--white);
+        }
+        
+        .story-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .story-image {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .story-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .story-content h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 30px;
+        }
+        
+        .story-content p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent);
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            color: var(--gray);
+            font-weight: 500;
+        }
+        
+        /* Team Section */
+        .team-section {
+            padding: 100px 0;
+            background: #f8faf9;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .section-header p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .team-card {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .team-image {
+            height: 280px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .team-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .team-card:hover .team-image img {
+            transform: scale(1.1);
+        }
+        
+        .team-content {
+            padding: 25px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .team-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 4px solid var(--white);
+            overflow: hidden;
+            position: absolute;
+            top: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .team-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .team-info {
+            margin-top: 30px;
+        }
+        
+        .team-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .team-role {
+            color: var(--secondary);
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        
+        .team-social {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .team-social a {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #f1f5f4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            transition: all 0.3s ease;
+        }
+        
+        .team-social a:hover {
+            background: var(--secondary);
+            color: var(--white);
+        }
+        
+        .join-team {
+            background: var(--white);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+            padding: 40px 30px;
+        }
+        
+        .join-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #f1f5f4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: var(--primary);
+            font-size: 2rem;
+        }
+        
+        .join-team h3 {
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .join-team p {
+            margin-bottom: 20px;
+        }
+        
+        .join-link {
+            color: var(--secondary);
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .join-link:hover {
+            color: var(--primary);
+            gap: 12px;
+        }
+        
+        /* Values Section */
+        .values-section {
+            padding: 100px 0;
+            background: var(--white);
+        }
+        
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .value-card {
+            background: var(--light);
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .value-card:hover {
+            background: var(--white);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .value-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(2, 44, 34, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            color: var(--primary);
+            font-size: 2rem;
+        }
+        
+        .value-title {
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .value-description {
+            color: var(--gray);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .story-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .about-hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .about-hero p {
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-hero {
+                padding: 80px 0;
+            }
+            
+            .about-hero h1 {
+                font-size: 2.3rem;
+            }
+            
+            .story-content h2 {
+                font-size: 2rem;
+            }
+            
+            .section-header h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .about-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .value-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <div class="container">
+            <h1 data-aos="fade-up">About CJONYX</h1>
+            <p data-aos="fade-up" data-aos-delay="100">Driving Innovation and Sustainable Growth in Nigeria</p>
+        </div>
+        <div class="hero-gradient"></div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="story-section">
+        <div class="container">
+            <div class="story-grid">
+                <div class="story-image" data-aos="fade-right">
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="Our Journey">
+                </div>
+                <div class="story-content" data-aos="fade-left">
+                    <h2>Our Story</h2>
+                    <p>
+                        Founded with a vision to transform Nigeria's business landscape, CJONYX has grown from a small 
+                        consulting firm into a comprehensive business solutions provider. Our journey is marked by 
+                        continuous innovation, sustainable practices, and unwavering commitment to our community.
+                    </p>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="yearsCount">7+</div>
+                            <div class="stat-label">Years of Excellence</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="projectsCount">100+</div>
+                            <div class="stat-label">Projects Completed</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Meet Our Team</h2>
+                <p class="text-lg text-gray-600">Our Expert Volunteers</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Team Member 1 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden text-center group">
+                    <div class="relative h-80 overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-primary/50"></div>
+                        <img src="{{ url_for('static', filename='images/shula.jpeg') }}" 
+                             alt="Mrs. Shulammite P." 
+                             class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 relative bg-white">
+                        <div class="mt-[-60px] mb-4">
+                            <div class="w-24 h-24 mx-auto rounded-full border-4 border-white overflow-hidden">
+                                <img src="{{ url_for('static', filename='images/shula.jpeg') }}" 
+                                     alt="Mrs. Shulammite P." 
+                                     class="w-full h-full object-cover object-center">
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Mrs. Shulammite P.</h3>
+                        <p class="text-primary font-medium mb-4">MD / CEO</p>
+                        <div class="flex justify-center space-x-3">
+                            <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Member 2 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden text-center group">
+                    <div class="relative h-80 overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-secondary/50"></div>
+                        <img src="{{ url_for('static', filename='images/ani.jpeg') }}" 
+                             alt="Emmanuel Ani" 
+                             class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 relative bg-white">
+                        <div class="mt-[-60px] mb-4">
+                            <div class="w-24 h-24 mx-auto rounded-full border-4 border-white overflow-hidden">
+                                <img src="{{ url_for('static', filename='images/ani.jpeg') }}" 
+                                     alt="Emmanuel Ani" 
+                                     class="w-full h-full object-cover object-center">
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Emmanuel Ani</h3>
+                        <p class="text-secondary font-medium mb-4">Team Lead - Eco Production & Micro Energy Development</p>
+                        <div class="flex justify-center space-x-3">
+                            <a href="#" class="text-gray-400 hover:text-secondary transition-colors">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-secondary transition-colors">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Team Member 3 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden text-center group">
+                    <div class="relative h-80 overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-secondary/50"></div>
+                        <img src="{{ url_for('static', filename='images/sarah.jpeg') }}" 
+                             alt="Emmanuel Ani" 
+                             class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 relative bg-white">
+                        <div class="mt-[-60px] mb-4">
+                            <div class="w-24 h-24 mx-auto rounded-full border-4 border-white overflow-hidden">
+                                <img src="{{ url_for('static', filename='images/sarah.jpeg') }}" 
+                                     alt="Emmanuel Ani" 
+                                     class="w-full h-full object-cover object-center">
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Mrs Sarah Duguri
+</h3>
+                        <p class="text-secondary font-medium mb-4">Director Administration and Finance</p>
+                        <div class="flex justify-center space-x-3">
+                            <a href="#" class="text-gray-400 hover:text-secondary transition-colors">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-secondary transition-colors">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+<!-- Team Member 4 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden text-center group">
+                    <div class="relative h-80 overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-secondary/50"></div>
+                        <img src="{{ url_for('static', filename='images/stan.jpeg') }}" 
+                             alt="Emmanuel Ani" 
+                             class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 relative bg-white">
+                        <div class="mt-[-60px] mb-4">
+                            <div class="w-24 h-24 mx-auto rounded-full border-4 border-white overflow-hidden">
+                                <img src="{{ url_for('static', filename='images/stan.jpeg') }}" 
+                                     alt="Emmanuel Ani" 
+                                     class="w-full h-full object-cover object-center">
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Stanley Emegbusim
+</h3>
+                        <p class="text-secondary font-medium mb-4">Business Development, Community Reseach and Data Team Lead</p>
+                        <div class="flex justify-center space-x-3">
+                            <a href="#" class="text-gray-400 hover:text-secondary transition-colors">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-secondary transition-colors">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div><!-- Team Member 5 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden text-center group">
+                    <div class="relative h-80 overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-secondary/50"></div>
+                        <img src="{{ url_for('static', filename='images/onyx.jpg') }}" 
+                             alt="Emmanuel Ani" 
+                             class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 relative bg-white">
+                        <div class="mt-[-60px] mb-4">
+                            <div class="w-24 h-24 mx-auto rounded-full border-4 border-white overflow-hidden">
+                                <img src="{{ url_for('static', filename='images/onyx.jpg') }}" 
+                                     alt="Emmanuel Ani" 
+                                     class="w-full h-full object-cover object-center">
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-900">Ms. Onyx-Chelsea Ifechimerem
+</h3>
+                        <p class="text-secondary font-medium mb-4">Digital literacy expert
+and Hub coordinator</p>
+                        <div class="flex justify-center space-x-3">
+                            <a href="#" class="text-gray-400 hover:text-secondary transition-colors">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-secondary transition-colors">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Join Team Card -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden text-center group">
+                <div class="relative h-80 bg-gradient-to-br from-gray-400 to-gray-500 flex items-center justify-center">
+                    <div class="w-32 h-32 bg-white/20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-plus text-white text-4xl"></i>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-900">Join Our Team</h3>
+                    <p class="text-gray-600 font-medium mb-4">We're always looking for talented individuals</p>
+                    <a href="#contact" class="inline-flex items-center space-x-2 text-primary hover:text-secondary transition-colors">
+                        <span>Get In Touch</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="values-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Our Core Values</h2>
+            </div>
+            
+            <div class="values-grid">
+                <div class="value-card" data-aos="fade-up" data-aos-delay="0">
+                    <div class="value-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3 class="value-title">Integrity</h3>
+                    <p class="value-description">We maintain the highest standards of professional ethics and transparency in all our dealings.</p>
+                </div>
+                
+                <div class="value-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="value-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="value-title">Innovation</h3>
+                    <p class="value-description">We continuously seek creative solutions and embrace new technologies to drive progress.</p>
+                </div>
+                
+                <div class="value-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="value-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="value-title">Collaboration</h3>
+                    <p class="value-description">We believe in the power of teamwork and building strong partnerships for mutual success.</p>
+                </div>
+                
+                <div class="value-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="value-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3 class="value-title">Sustainability</h3>
+                    <p class="value-description">We are committed to practices that ensure long-term environmental, social, and economic health.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                once: true,
+                easing: 'ease-out-quart'
+            });
+            
+            // Number animation
+            function animateValue(id, start, end, duration) {
+                const obj = document.getElementById(id);
+                if (!obj) return;
+                
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    obj.innerHTML = Math.floor(progress * (end - start) + start) + "+";
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            }
+            
+            // Animate numbers when in viewport
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateValue("yearsCount", 0, 7, 1500);
+                        animateValue("projectsCount", 0, 100, 1500);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            const statSection = document.querySelector('.stats-grid');
+            if (statSection) {
+                observer.observe(statSection);
+            }
+        });
+    </script>
+{% endblock %}

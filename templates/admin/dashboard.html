@@ -1,0 +1,241 @@
+{% extends "admin/admin_base.html" %}
+{% set title = 'CJONYX - Admin Dashboard' %}
+
+{% block extra_css %}
+<style>
+    .admin-card {
+        transition: all 0.3s ease;
+    }
+    .admin-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    .stat-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+    .stat-card.green {
+        background: linear-gradient(135deg, #667eea 0%, #10b981 100%);
+    }
+    .stat-card.blue {
+        background: linear-gradient(135deg, #667eea 0%, #3b82f6 100%);
+    }
+    .stat-card.purple {
+        background: linear-gradient(135deg, #667eea 0%, #8b5cf6 100%);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <!-- Admin Header -->
+    <header class="bg-white shadow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-6">
+                <div class="flex items-center">
+                    <h1 class="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-gray-700">Welcome, {{ session.username }}!</span>
+                    <a href="{{ url_for('logout') }}" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-all">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+            <div class="stat-card rounded-lg p-6 text-center">
+                <div class="text-3xl font-bold">{{ total_users }}</div>
+                <div class="text-sm opacity-90 mt-1">Total Users</div>
+                <i class="fas fa-users text-4xl opacity-50 mt-2"></i>
+            </div>
+            
+            <div class="stat-card green rounded-lg p-6 text-center">
+                <div class="text-3xl font-bold">{{ total_blogs }}</div>
+                <div class="text-sm opacity-90 mt-1">Blog Posts</div>
+                <i class="fas fa-blog text-4xl opacity-50 mt-2"></i>
+            </div>
+            
+            <div class="stat-card blue rounded-lg p-6 text-center">
+                <div class="text-3xl font-bold">{{ total_events }}</div>
+                <div class="text-sm opacity-90 mt-1">Events</div>
+                <i class="fas fa-calendar-alt text-4xl opacity-50 mt-2"></i>
+            </div>
+            
+            <div class="stat-card purple rounded-lg p-6 text-center">
+                <div class="text-3xl font-bold">{{ total_subscribers }}</div>
+                <div class="text-sm opacity-90 mt-1">Subscribers</div>
+                <i class="fas fa-envelope text-4xl opacity-50 mt-2"></i>
+            </div>
+
+            <div class="stat-card rounded-lg p-6 text-center" style="background: linear-gradient(135deg, #667eea 0%, #f093fb 100%);">
+                <div class="text-3xl font-bold">{{ total_chat_messages }}</div>
+                <div class="text-sm opacity-90 mt-1">Chat Messages</div>
+                {% if unread_chat_messages > 0 %}
+                    <div class="text-xs bg-red-500 text-white px-2 py-1 rounded-full mt-1">{{ unread_chat_messages }} unread</div>
+                {% endif %}
+                <i class="fas fa-comment text-4xl opacity-50 mt-2"></i>
+            </div>
+
+            <div class="stat-card rounded-lg p-6 text-center" style="background: linear-gradient(135deg, #667eea 0%, #fa709a 100%);">
+                <div class="text-3xl font-bold">{{ total_gallery_images }}</div>
+                <div class="text-sm opacity-90 mt-1">Gallery Images</div>
+                <i class="fas fa-images text-4xl opacity-50 mt-2"></i>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Event Management card -->
+            <div class="admin-card bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Event Management</h3>
+                    <i class="fas fa-calendar-alt text-primary text-2xl"></i>
+                </div>
+                <p class="text-gray-600 mb-4">Create and manage events</p>
+                <div class="space-y-2">
+                    <a href="{{ url_for('admin_events') }}" class="block w-full text-center bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-all">
+                        View All Events
+                    </a>
+                    <a href="{{ url_for('admin_new_event') }}" class="block w-full text-center bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700 transition-all">
+                        Create New Event
+                    </a>
+                </div>
+            </div>
+
+            <!-- Blog Management card -->
+            <div class="admin-card bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Blog Management</h3>
+                    <i class="fas fa-blog text-primary text-2xl"></i>
+                </div>
+                <p class="text-gray-600 mb-4">Create and manage blog posts</p>
+                <div class="space-y-2">
+                    <a href="{{ url_for('admin_blogs') }}" class="block w-full text-center bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-all">
+                        View All Blogs
+                    </a>
+                    <a href="{{ url_for('admin_new_blog') }}" class="block w-full text-center bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700 transition-all">
+                        Create New Blog
+                    </a>
+                </div>
+            </div>
+
+            <!-- Course Management card -->
+            <div class="admin-card bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Course Management</h3>
+                    <i class="fas fa-play-circle text-primary text-2xl"></i>
+                </div>
+                <p class="text-gray-600 mb-4">Manage YouTube courses</p>
+                <div class="space-y-2">
+                    <a href="{{ url_for('admin_courses') }}" class="block w-full text-center bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-all">
+                        View All Courses
+                    </a>
+                    <a href="{{ url_for('admin_new_course') }}" class="block w-full text-center bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700 transition-all">
+                        Add New Course
+                    </a>
+                </div>
+            </div>
+
+            <!-- Gallery Management card -->
+            <div class="admin-card bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Gallery Management</h3>
+                    <i class="fas fa-images text-primary text-2xl"></i>
+                </div>
+                <p class="text-gray-600 mb-4">Manage gallery images</p>
+                <div class="space-y-2">
+                    <a href="{{ url_for('admin_gallery') }}" class="block w-full text-center bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-all">
+                        View All Images
+                    </a>
+                    <a href="{{ url_for('admin_new_gallery') }}" class="block w-full text-center bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700 transition-all">
+                        Upload New Image
+                    </a>
+                </div>
+            </div>
+
+            <!-- Subscribers card -->
+            <div class="admin-card bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Subscribers</h3>
+                    <i class="fas fa-users text-primary text-2xl"></i>
+                </div>
+                <p class="text-gray-600 mb-4">Manage newsletter subscribers</p>
+                <a href="{{ url_for('admin_subscribers') }}" class="block w-full text-center bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-all">
+                    View Subscribers
+                </a>
+            </div>
+
+            <!-- Contact Messages card -->
+            <div class="admin-card bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Contact Messages</h3>
+                    <i class="fas fa-envelope text-primary text-2xl"></i>
+                </div>
+                <p class="text-gray-600 mb-4">View and manage contact form submissions</p>
+                <a href="{{ url_for('admin_contacts') }}" class="block w-full text-center bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-all">
+                    View Messages
+                </a>
+            </div>
+
+            <!-- Chat Messages card -->
+            <div class="admin-card bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Chat Messages</h3>
+                    <div class="flex items-center">
+                        <i class="fas fa-comment text-primary text-2xl"></i>
+                        {% if unread_chat_messages > 0 %}
+                            <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full ml-2">{{ unread_chat_messages }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <p class="text-gray-600 mb-4">View and manage live chat messages</p>
+                <a href="{{ url_for('admin_chat_messages') }}" class="block w-full text-center bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-all">
+                    View Chat Messages
+                </a>
+            </div>
+
+            <!-- Website card -->
+            <div class="admin-card bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Website</h3>
+                    <i class="fas fa-globe text-primary text-2xl"></i>
+                </div>
+                <p class="text-gray-600 mb-4">Visit main website</p>
+                <a href="{{ url_for('index') }}" target="_blank" class="block w-full text-center bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-all">
+                    View Website
+                </a>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="bg-white rounded-lg shadow p-6 mb-8">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
+            <div class="space-y-4">
+                {% for activity in recent_activity %}
+                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center mr-4">
+                            <i class="fas fa-{{ activity.icon }} text-white"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-900 font-semibold">{{ activity.message }}</div>
+                            <div class="text-xs text-gray-500">{{ activity.timestamp }}</div>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="{{ url_for(activity.link) }}" class="text-blue-600 hover:underline text-sm">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

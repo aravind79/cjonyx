@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+{% block title %}CJONYX - CSED{% endblock %}
+
+{% block content %}
+<section class="relative overflow-hidden pt-32 pb-24 bg-gradient-to-br from-primary via-primary to-secondary text-white">
+    <div class="absolute inset-0 opacity-15">
+        <div class="absolute -top-20 -left-12 h-64 w-64 rounded-full bg-white blur-3xl"></div>
+        <div class="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-accent blur-3xl"></div>
+    </div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div data-aos="fade-right">
+                <p class="uppercase tracking-[0.35em] text-sm text-green-100 mb-4">Our Services</p>
+                <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-6">Center for Social Enterprise and Development</h1>
+                <p class="text-lg md:text-xl text-green-50 max-w-2xl mb-8">
+                    Advancing community research, social entrepreneurship, and practical support systems that respond to real needs.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#registration" class="inline-flex items-center bg-white text-primary px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-all">
+                        Register Now
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                    <a href="#focus-areas" class="inline-flex items-center border border-white/40 text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/10 transition-all">
+                        Explore Our Work
+                    </a>
+                </div>
+            </div>
+            <div data-aos="fade-left">
+                <div class="rounded-3xl bg-white/10 backdrop-blur-sm border border-white/15 shadow-2xl p-4">
+                    <img
+                        src="{{ url_for('static', filename='images/events.jpg') }}"
+                        alt="Center for Social Enterprise and Development activities"
+                        class="w-full rounded-2xl shadow-xl"
+                    >
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent"></div>
+</section>
+
+<section class="py-24 bg-white" id="about">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div data-aos="fade-up">
+                <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-light text-primary text-sm font-semibold mb-6">
+                    <span class="h-2.5 w-2.5 rounded-full bg-secondary"></span>
+                    Why CSED Exists
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-primary mb-6">
+                    Why was Cjonyx Center for Social Enterprise Development created?
+                </h2>
+                <p class="text-gray-600 text-lg leading-8">
+                    Cjonyx Social Enterprise Development Center is a self-sustaining hybrid benefit corporation providing blended values
+                    through both social and profit benefits. The center is committed to community research and needs analysis, while
+                    training people who are about to retire and retirees to develop and express a desire for social entrepreneurship.
+                    The goal is to strategically steer retirees toward community support based on identified needs.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6" data-aos="fade-left">
+                <div class="rounded-2xl bg-gray-50 p-8 shadow-sm border border-gray-100">
+                    <div class="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-5">
+                        <i class="fas fa-magnifying-glass-chart text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Research</h3>
+                    <p class="text-gray-600">We study community realities so interventions respond to actual local needs.</p>
+                </div>
+                <div class="rounded-2xl bg-gray-50 p-8 shadow-sm border border-gray-100">
+                    <div class="w-14 h-14 rounded-2xl bg-secondary/10 text-secondary flex items-center justify-center mb-5">
+                        <i class="fas fa-people-arrows text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Transition Support</h3>
+                    <p class="text-gray-600">We help pre-retirees and retirees redirect experience into social enterprise impact.</p>
+                </div>
+                <div class="rounded-2xl bg-gray-50 p-8 shadow-sm border border-gray-100 sm:col-span-2">
+                    <div class="w-14 h-14 rounded-2xl bg-accent/10 text-accent flex items-center justify-center mb-5">
+                        <i class="fas fa-seedling text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Blended Value</h3>
+                    <p class="text-gray-600">
+                        CSED is built around programs that combine social good with sustainable enterprise outcomes.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="focus-areas" class="py-24 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl mb-14" data-aos="fade-up">
+            <p class="text-sm font-semibold tracking-[0.3em] uppercase text-secondary mb-3">CSED Programs</p>
+            <h2 class="text-3xl md:text-4xl font-bold text-primary mb-5">Work we are leading under the CSED umbrella</h2>
+            <p class="text-lg text-gray-600">
+                This page now reflects the public CSED profile, including the featured initiatives currently highlighted on the live site.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <article class="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100" data-aos="fade-up">
+                <div class="bg-gray-50 h-80 flex items-center justify-center p-4">
+                    <img src="{{ url_for('static', filename='images/flyer.jpeg') }}" alt="Cjonyx entrepreneurship school admission flyer" class="max-h-full max-w-full object-contain">
+                </div>
+                <div class="p-8">
+                    <h3 class="text-2xl font-bold text-primary mb-4">Training young girls in garment making using recycled fabrics</h3>
+                    <p class="text-gray-600 leading-7">
+                        A practical entrepreneurship pathway that combines skill-building, creativity, and sustainable reuse of materials.
+                    </p>
+                </div>
+            </article>
+
+            <article class="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100" data-aos="fade-up" data-aos-delay="100">
+                <div class="bg-gray-50 h-80 flex items-center justify-center p-4">
+                    <img src="{{ url_for('static', filename='images/image2.jpeg') }}" alt="Women receiving palliative support" class="max-h-full max-w-full object-contain">
+                </div>
+                <div class="p-8">
+                    <h3 class="text-2xl font-bold text-primary mb-4">Women receive COVID-19 palliative support</h3>
+                    <p class="text-gray-600 leading-7">
+                        Community-facing relief efforts designed to strengthen resilience and meet urgent welfare needs.
+                    </p>
+                </div>
+            </article>
+
+            <article class="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100" data-aos="fade-up" data-aos-delay="150">
+                <div class="bg-gray-50 h-80 flex items-center justify-center p-4">
+                    <img src="{{ url_for('static', filename='images/gal8.jpeg') }}" alt="MSME development initiative" class="max-h-full max-w-full object-contain">
+                </div>
+                <div class="p-8">
+                    <h3 class="text-2xl font-bold text-primary mb-4">MSME development for Nigeria&rsquo;s economic growth</h3>
+                    <p class="text-gray-600 leading-7">
+                        Business development support that equips MSMEs with the capacity needed to grow and contribute meaningfully to local economies.
+                    </p>
+                </div>
+            </article>
+
+            <article class="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100" data-aos="fade-up" data-aos-delay="200">
+                <div class="bg-gray-50 h-80 flex items-center justify-center p-4">
+                    <img src="{{ url_for('static', filename='images/gal11.jpeg') }}" alt="Capacity building program for MSMEs" class="max-h-full max-w-full object-contain">
+                </div>
+                <div class="p-8">
+                    <h3 class="text-2xl font-bold text-primary mb-4">Capacity building for MSMEs</h3>
+                    <p class="text-gray-600 leading-7">
+                        Focused enterprise training that strengthens operational readiness, strategy, and long-term sustainability.
+                    </p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section id="registration" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+            <div data-aos="fade-right">
+                <p class="text-sm font-semibold tracking-[0.3em] uppercase text-secondary mb-3">Registration</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-primary mb-6">Registration and admission under CSED</h2>
+                <p class="text-lg text-gray-600 leading-8 mb-8">
+                    We added a dedicated registration section to the CSED page using your flyer assets. Visitors can clearly see the
+                    admission campaign and use the direct contact details to register or make enquiries.
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                    <div class="rounded-2xl border border-gray-200 p-5 bg-gray-50">
+                        <p class="text-sm uppercase tracking-widest text-gray-500 mb-2">Phone</p>
+                        <a href="tel:08036856779" class="text-xl font-bold text-primary hover:text-secondary transition-colors">0803 685 6779</a>
+                    </div>
+                    <div class="rounded-2xl border border-gray-200 p-5 bg-gray-50">
+                        <p class="text-sm uppercase tracking-widest text-gray-500 mb-2">Email</p>
+                        <a href="mailto:cjonyxcenter@gmail.com" class="text-xl font-bold text-primary hover:text-secondary transition-colors break-all">cjonyxcenter@gmail.com</a>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-4">
+                    <a href="tel:08036856779" class="inline-flex items-center bg-primary text-white px-8 py-4 rounded-lg font-semibold hover:bg-primary/90 transition-all">
+                        Call to Register
+                    </a>
+                    <a href="mailto:cjonyxcenter@gmail.com?subject=CSED%20Registration%20Enquiry" class="inline-flex items-center bg-secondary text-white px-8 py-4 rounded-lg font-semibold hover:bg-secondary/90 transition-all">
+                        Send Enquiry
+                    </a>
+                </div>
+            </div>
+
+            <div class="space-y-6" data-aos="fade-left">
+                <div class="rounded-3xl overflow-hidden border border-gray-200 shadow-xl bg-gray-50 p-4">
+                    <img src="{{ url_for('static', filename='images/admission') }}" alt="CJONYX admission flyer" class="w-full h-auto rounded-2xl">
+                </div>
+                <div class="rounded-3xl overflow-hidden border border-gray-200 shadow-lg bg-gray-50 p-4">
+                    <img src="{{ url_for('static', filename='images/flyer.jpeg') }}" alt="CJONYX registration flyer" class="w-full h-auto rounded-2xl">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-24 bg-primary text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-12" data-aos="fade-up">
+            <p class="text-sm font-semibold tracking-[0.3em] uppercase text-green-200 mb-3">Our Partners</p>
+            <h2 class="text-3xl md:text-4xl font-bold mb-5">Building impact with strong collaborators</h2>
+            <p class="text-lg text-green-50">
+                The live CSED page highlights partner support, so this section preserves that emphasis inside the local rebuild.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-6 items-center" data-aos="fade-up" data-aos-delay="100">
+            <div class="bg-white rounded-2xl p-6 h-32 flex items-center justify-center">
+                <img src="{{ url_for('static', filename='images/logo4.png') }}" alt="Partner logo" class="max-h-full max-w-full object-contain">
+            </div>
+            <div class="bg-white rounded-2xl p-6 h-32 flex items-center justify-center">
+                <img src="{{ url_for('static', filename='images/logo3.jpg') }}" alt="Partner logo" class="max-h-full max-w-full object-contain">
+            </div>
+            <div class="bg-white rounded-2xl p-6 h-32 flex items-center justify-center">
+                <img src="{{ url_for('static', filename='images/logo2.jpeg') }}" alt="Partner logo" class="max-h-full max-w-full object-contain">
+            </div>
+            <div class="bg-white rounded-2xl p-6 h-32 flex items-center justify-center">
+                <img src="{{ url_for('static', filename='images/Clogo.png') }}" alt="Partner logo" class="max-h-full max-w-full object-contain">
+            </div>
+            <div class="bg-white rounded-2xl p-6 h-32 flex items-center justify-center">
+                <img src="{{ url_for('static', filename='images/event_logo.jpeg') }}" alt="Partner logo" class="max-h-full max-w-full object-contain">
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

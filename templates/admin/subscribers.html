@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% block title %}CJONYX - Manage Subscribers{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-6">
+                <div class="flex items-center space-x-4">
+                    <a href="{{ url_for('admin_dashboard') }}" class="text-gray-600 hover:text-primary">
+                        <i class="fas fa-arrow-left text-xl"></i>
+                    </a>
+                    <h1 class="text-3xl font-bold text-gray-900">Newsletter Subscribers</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-gray-600">Total: {{ subscribers|length }} subscribers</span>
+                    <button class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-all">
+                        <i class="fas fa-download mr-2"></i>Export CSV
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Subscribers Table -->
+        <div class="bg-white shadow overflow-hidden sm:rounded-md">
+            <div class="px-4 py-5 sm:px-6">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">All Subscribers</h3>
+                <p class="mt-1 max-w-2xl text-sm text-gray-500">Manage your newsletter subscribers</p>
+            </div>
+            
+            {% if subscribers %}
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Subscriber
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Email
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Subscribed Date
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Status
+                                </th>
+                                <th scope="col" class="relative px-6 py-3">
+                                    <span class="sr-only">Actions</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            {% for subscriber in subscribers %}
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10">
+                                                <div class="h-10 w-10 rounded-full bg-primary flex items-center justify-center">
+                                                    <span class="text-white font-medium">{{ subscriber.name[0].upper() if subscriber.name else subscriber.email[0].upper() }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">
+                                                    {{ subscriber.name or 'Anonymous' }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">{{ subscriber.email }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ subscriber.subscribed_at.strftime('%Y-%m-%d %H:%M') }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ 'bg-green-100 text-green-800' if subscriber.active else 'bg-red-100 text-red-800' }}">
+                                            {{ 'Active' if subscriber.active else 'Inactive' }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <div class="flex items-center space-x-2">
+                                            <button class="text-indigo-600 hover:text-indigo-900" title="Send Email">
+                                                <i class="fas fa-envelope"></i>
+                                            </button>
+                                            <button class="text-{{ 'red' if subscriber.active else 'green' }}-600 hover:text-{{ 'red' if subscriber.active else 'green' }}-900" title="{{ 'Deactivate' if subscriber.active else 'Activate' }}">
+                                                <i class="fas fa-{{ 'ban' if subscriber.active else 'check' }}"></i>
+                                            </button>
+                                            <button class="text-red-600 hover:text-red-900" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center py-12">
+                    <i class="fas fa-envelope text-6xl text-gray-300 mb-4"></i>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">No subscribers yet</h3>
+                    <p class="text-gray-500 mb-6">Your newsletter subscribers will appear here.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        {% if subscribers %}
+            <!-- Statistics -->
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-users text-2xl text-primary"></i>
+                        </div>
+                        <div class="ml-4">
+                            <div class="text-2xl font-bold text-gray-900">{{ subscribers|selectattr('active', 'equalto', True)|list|length }}</div>
+                            <div class="text-sm text-gray-500">Active Subscribers</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-calendar text-2xl text-green-500"></i>
+                        </div>
+                        <div class="ml-4">
+                            <div class="text-2xl font-bold text-gray-900">
+                                {{ subscribers|selectattr('subscribed_at', 'ge', (moment().subtract(30, 'days')))|list|length if moment else 'N/A' }}
+                            </div>
+                            <div class="text-sm text-gray-500">This Month</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-chart-line text-2xl text-blue-500"></i>
+                        </div>
+                        <div class="ml-4">
+                            <div class="text-2xl font-bold text-gray-900">
+                                {{ ((subscribers|selectattr('active', 'equalto', True)|list|length / subscribers|length) * 100)|round(1) if subscribers|length > 0 else 0 }}%
+                            </div>
+                            <div class="text-sm text-gray-500">Active Rate</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

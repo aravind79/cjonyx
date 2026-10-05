@@ -1,0 +1,53 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}CJONYX - Upload Gallery Image{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <header class="bg-white shadow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-6">
+                <div class="flex items-center space-x-4">
+                    <a href="{{ url_for('admin_gallery') }}" class="text-gray-600 hover:text-primary">
+                        <i class="fas fa-arrow-left text-xl"></i>
+                    </a>
+                    <h1 class="text-3xl font-bold text-gray-900">Upload Gallery Image</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="mb-6">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else category }} bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded mb-2" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" enctype="multipart/form-data" class="bg-white shadow rounded-lg p-6">
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Image File</label>
+                    <input type="file" name="image-upload" accept="image/*" required class="mt-1 block w-full text-sm text-gray-700">
+                    <p class="mt-1 text-sm text-gray-500">Upload the gallery image directly from your device.</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Description</label>
+                    <input type="text" name="description" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Short description (optional)">
+                </div>
+
+                <div class="flex justify-end">
+                    <a href="{{ url_for('admin_gallery') }}" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg mr-2">Cancel</a>
+                    <button type="submit" class="bg-primary text-white px-6 py-2 rounded-lg">Upload</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

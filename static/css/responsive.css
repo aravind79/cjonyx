@@ -1,0 +1,71 @@
+/* Global mobile responsiveness hardening */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+img, video, iframe {
+    max-width: 100%;
+    height: auto;
+}
+
+@media (max-width: 1024px) {
+    .max-w-7xl,
+    .max-w-6xl,
+    .max-w-5xl,
+    .max-w-4xl {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .slider-arrow {
+        display: none !important;
+    }
+
+    .content-overlay {
+        padding: 1rem !important;
+    }
+
+    .sticky {
+        position: static !important;
+        top: auto !important;
+    }
+
+    .card-hover,
+    .service-card {
+        padding: 1rem !important;
+    }
+
+    .text-4xl,
+    .text-5xl,
+    .text-6xl {
+        line-height: 1.2;
+        word-break: break-word;
+    }
+}
+
+@media (max-width: 640px) {
+    .grid {
+        gap: 1rem !important;
+    }
+
+    .flex {
+        min-width: 0;
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+        font-size: 16px;
+    }
+
+    table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}

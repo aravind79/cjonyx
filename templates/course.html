@@ -1,0 +1,431 @@
+{% extends "base.html" %}
+{% block title %}CJONYX - E-Courses{% endblock %}
+{% block content %}
+
+<style>
+    /* E-Course specific styles */
+    .ecourse-hero {
+            background: linear-gradient(135deg, #022c22 0%, #10b981 100%);
+    }
+    
+    .course-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        height: 100%;
+    }
+    
+    .course-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    }
+    
+    .video-thumbnail {
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+    }
+    
+    .video-thumbnail::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .video-thumbnail:hover::after {
+        opacity: 1;
+    }
+    
+    .play-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 70px;
+        height: 70px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+        opacity: 0.9;
+        transition: all 0.3s ease;
+    }
+    
+    .video-thumbnail:hover .play-button {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+    
+    .play-button i {
+        color: theme('colors.primary');
+        font-size: 24px;
+        margin-left: 4px;
+    }
+    
+    .consultation-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .consultation-modal.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .modal-content {
+        background: white;
+        border-radius: 16px;
+        padding: 2rem;
+        max-width: 500px;
+        width: 90%;
+        text-align: center;
+        position: relative;
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+    }
+    
+    .consultation-modal.active .modal-content {
+        transform: translateY(0);
+    }
+    
+    .close-modal {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #666;
+    }
+    
+    .category-filter {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+        margin-bottom: 2rem;
+    }
+    
+    .filter-btn {
+        padding: 0.5rem 1.5rem;
+        border-radius: 50px;
+        background: theme('colors.light');
+        color: theme('colors.primary');
+        border: 1px solid theme('colors.primary');
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .filter-btn.active, .filter-btn:hover {
+        background: theme('colors.primary');
+        color: white;
+    }
+    
+    .progress-bar {
+        height: 6px;
+        background: #e5e7eb;
+        border-radius: 3px;
+        overflow: hidden;
+        margin: 1rem 0;
+    }
+    
+    .progress-fill {
+        height: 100%;
+        background: theme('colors.secondary');
+        border-radius: 3px;
+        transition: width 0.5s ease;
+    }
+    
+    .course-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: theme('colors.secondary');
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        z-index: 2;
+    }
+</style>
+
+<!-- Hero Section -->
+<section class="ecourse-hero text-white py-20">
+    <div class="max-w-7xl p-8 mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6" data-aos="fade-up">CJONYX E-Courses</h1>
+        <p class="text-xl md:text-2xl max-w-3xl mx-auto mb-8" data-aos="fade-up" data-aos-delay="100">
+            Expand your knowledge with our curated educational content. Start learning today!
+        </p>
+        <div class="flex flex-wrap justify-center gap-4" data-aos="fade-up" data-aos-delay="200">
+            <a href="#courses" class="bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all">
+                Browse Courses
+            </a>
+            <a href="#consultation" class="bg-secondary text-white px-6 py-3 rounded-lg font-semibold hover:bg-accent transition-all">
+                Get Learning Advice
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Courses Section -->
+<section id="courses" class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-primary mb-4">Our Course Library</h2>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                Explore our collection of educational videos across various topics. Click on any video to start learning.
+            </p>
+        </div>
+
+        <!-- Category Filters -->
+        <div class="category-filter mb-12" data-aos="fade-up">
+            <button class="filter-btn active" data-filter="all">All Courses</button>
+            {% if categories %}
+                {% for category in categories %}
+                <button class="filter-btn" data-filter="{{ category|lower }}">{{ category|title }}</button>
+                {% endfor %}
+            {% else %}
+                <button class="filter-btn" data-filter="business">Business</button>
+                <button class="filter-btn" data-filter="environment">Environment</button>
+                <button class="filter-btn" data-filter="healthcare">Healthcare</button>
+                <button class="filter-btn" data-filter="community">Community</button>
+            {% endif %}
+        </div>
+
+        <!-- Courses Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% if courses %}
+                {% for course in courses %}
+                <div class="course-card" data-category="{{ course.category|lower }}" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 100 }}">
+                    <div class="video-thumbnail relative">
+                        {% if course.thumbnail_url %}
+                            <img src="{{ course.thumbnail_url }}" 
+                                 alt="{{ course.title }}" 
+                                 class="w-full h-48 object-cover">
+                        {% elif 'youtube.com/watch?v=' in course.youtube_url %}
+                            {% set video_id = course.youtube_url.split('v=')[1].split('&')[0] %}
+                            <img src="https://img.youtube.com/vi/{{ video_id }}/maxresdefault.jpg" 
+                                 alt="{{ course.title }}" 
+                                 class="w-full h-48 object-cover">
+                        {% elif 'youtu.be/' in course.youtube_url %}
+                            {% set video_id = course.youtube_url.split('youtu.be/')[1].split('?')[0] %}
+                            <img src="https://img.youtube.com/vi/{{ video_id }}/maxresdefault.jpg" 
+                                 alt="{{ course.title }}" 
+                                 class="w-full h-48 object-cover">
+                        {% else %}
+                            <img src="https://via.placeholder.com/400x300/10b981/ffffff?text={{ course.title[:20] }}" 
+                                 alt="{{ course.title }}" 
+                                 class="w-full h-48 object-cover">
+                        {% endif %}
+                        <div class="play-button" data-video-url="{{ course.youtube_url }}">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <div class="course-badge">{{ course.category or 'General' }}</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">{{ course.title }}</h3>
+                        <p class="text-gray-600 mb-4">{{ course.description[:100] }}{% if course.description|length > 100 %}...{% endif %}</p>
+                        <div class="flex justify-between items-center text-sm text-gray-500">
+                            <span><i class="far fa-clock mr-1"></i> {{ course.duration or 'Variable' }}</span>
+                            <span><i class="far fa-calendar mr-1"></i> {{ course.created_at.strftime('%b %Y') }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <!-- No Courses Available -->
+                <div class="col-span-full text-center py-12">
+                    <div class="w-24 h-24 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-gray-400 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-600 mb-2">No Courses Available Yet</h3>
+                    <p class="text-gray-500">We're working on creating amazing educational content for you. Check back soon!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Consultation Section -->
+<section id="consultation" class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div data-aos="fade-right">
+                <h2 class="text-3xl font-bold text-primary mb-6">Need Personalized Guidance?</h2>
+                <p class="text-lg text-gray-600 mb-6">
+                    Our educational consultants are ready to help you create a learning path tailored to your specific goals and needs.
+                </p>
+                <div class="space-y-4 mb-8">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center">
+                            <i class="fas fa-check text-secondary"></i>
+                        </div>
+                        <span class="text-gray-700">Customized learning plans</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center">
+                            <i class="fas fa-check text-secondary"></i>
+                        </div>
+                        <span class="text-gray-700">Expert guidance in your field of interest</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center">
+                            <i class="fas fa-check text-secondary"></i>
+                        </div>
+                        <span class="text-gray-700">Ongoing support and resources</span>
+                    </div>
+                </div>
+                <a href="#contact" class="inline-flex items-center space-x-2 bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-all">
+                    <span>Schedule a Consultation</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="relative" data-aos="fade-left">
+                <div class="bg-gradient-to-r from-primary to-secondary rounded-2xl p-8 text-white">
+                    <h3 class="text-2xl font-bold mb-4">Free Learning Assessment</h3>
+                    <p class="mb-6">Not sure where to start? Take our free assessment to identify the best courses for your goals.</p>
+                    <form class="space-y-4">
+                        <input type="email" placeholder="Your Email" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 placeholder-white/60 focus:outline-none focus:border-white">
+                        <button type="submit" class="w-full bg-white text-primary px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-all">
+                            Get Started
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Consultation Modal -->
+<div class="consultation-modal" id="consultationModal">
+    <div class="modal-content">
+        <button class="close-modal" id="closeModal">&times;</button>
+        <div class="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
+            <i class="fas fa-video text-primary text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-2">Ready to learn?</h3>
+        <p class="text-gray-600 mb-6">Would you like to schedule a consultation with one of our experts to maximize your learning experience?</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <button class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg font-medium hover:bg-gray-300 transition-all" id="watchNow">
+                Watch Now
+            </button>
+            <button class="bg-primary text-white px-6 py-2 rounded-lg font-medium hover:bg-primary/90 transition-all" id="scheduleConsultation">
+                Schedule Consultation
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize AOS
+        if (typeof AOS !== 'undefined') {
+            AOS.init({
+                duration: 800,
+                once: true,
+                easing: 'ease-out-quart'
+            });
+        }
+
+        // Category filtering
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const courseCards = document.querySelectorAll('.course-card');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                const filterValue = button.getAttribute('data-filter');
+                
+                // Show/hide courses based on filter
+                courseCards.forEach(card => {
+                    if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Video consultation modal
+        const playButtons = document.querySelectorAll('.play-button');
+        const consultationModal = document.getElementById('consultationModal');
+        const closeModal = document.getElementById('closeModal');
+        const watchNowBtn = document.getElementById('watchNow');
+        const scheduleConsultationBtn = document.getElementById('scheduleConsultation');
+        let currentVideoUrl = null;
+
+        playButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                currentVideoUrl = this.getAttribute('data-video-url');
+                consultationModal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
+            });
+        });
+
+        // Close modal
+        closeModal.addEventListener('click', function() {
+            consultationModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        // Watch now button
+        watchNowBtn.addEventListener('click', function() {
+            consultationModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            
+            // Open video in a new tab
+            if (currentVideoUrl) {
+                window.open(currentVideoUrl, '_blank');
+            }
+        });
+
+        // Schedule consultation button
+        scheduleConsultationBtn.addEventListener('click', function() {
+            consultationModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            
+            // Scroll to consultation section
+            document.getElementById('consultation').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+
+        // Close modal when clicking outside
+        consultationModal.addEventListener('click', function(e) {
+            if (e.target === consultationModal) {
+                consultationModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    });
+</script>
+{% endblock %}

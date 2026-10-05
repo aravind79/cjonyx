@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+{% block title %}CJONYX - Gallery{% endblock %}
+
+{% block extra_css %}
+<style>
+    .gallery-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .gallery-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    .gallery-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to top, rgba(255, 255, 255, 0.95), transparent);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 1.5rem;
+    }
+    
+    .gallery-item:hover .gallery-overlay {
+        opacity: 1;
+    }
+    
+    .lightbox {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 1000;
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .lightbox-content {
+        max-width: 90%;
+        max-height: 90%;
+        position: relative;
+    }
+    
+    .lightbox-close {
+        position: absolute;
+        top: -40px;
+        right: 0;
+        color: white;
+        font-size: 2rem;
+        cursor: pointer;
+    }
+    
+    .filter-btn {
+        transition: all 0.3s ease;
+    }
+    
+    .filter-btn.active {
+        background: #10b981;
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative pt-32 pb-24 bg-gradient-to-r from-primary to-secondary text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6" data-aos="fade-up">
+                Our Gallery
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-100 max-w-3xl mx-auto mb-8" data-aos="fade-up" data-aos-delay="100">
+                Discover our journey through images - projects, events, and achievements
+            </p>
+        </div>
+    </div>
+    <div class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent"></div>
+</section>
+
+<!-- Filter Buttons -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-wrap justify-center gap-4 mb-12" data-aos="fade-up">
+            <button class="filter-btn active px-6 py-3 rounded-lg border border-gray-300 hover:bg-secondary hover:text-white transition-all" data-filter="all">
+                All
+            </button>
+            <button class="filter-btn px-6 py-3 rounded-lg border border-gray-300 hover:bg-secondary hover:text-white transition-all" data-filter="events">
+                Events
+            </button>
+            <button class="filter-btn px-6 py-3 rounded-lg border border-gray-300 hover:bg-secondary hover:text-white transition-all" data-filter="projects">
+                Projects
+            </button>
+            <button class="filter-btn px-6 py-3 rounded-lg border border-gray-300 hover:bg-secondary hover:text-white transition-all" data-filter="team">
+                Team
+            </button>
+            <button class="filter-btn px-6 py-3 rounded-lg border border-gray-300 hover:bg-secondary hover:text-white transition-all" data-filter="facilities">
+                Facilities
+            </button>
+            {% if event_filters %}
+                {% for event_id, event_title in event_filters %}
+                    <button class="filter-btn px-6 py-3 rounded-lg border border-gray-300 hover:bg-secondary hover:text-white transition-all" data-filter="event-{{ event_id }}">
+                        {{ event_title }}
+                    </button>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <!-- Gallery Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {% if images and images|length > 0 %}
+                {% for img in images %}
+                    <div class="gallery-item" data-tags="{{ (img.filter_tags or ['projects'])|join(' ') }}" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 80 }}">
+                        <img src="{{ img.image_url }}" alt="Gallery image" class="w-full h-64 object-cover">
+                        <div class="gallery-overlay">
+                            <h3 class="text-lg font-semibold text-gray-900">{{ img.description or 'Image' }}</h3>
+                            <p class="text-sm text-gray-700 mt-1">
+                                {{ img.created_at.strftime('%b %d, %Y') }}
+                                {% if img.event %}
+                                    - {{ img.event.title }}
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-span-full text-center py-12">
+                    <p class="text-gray-600">No gallery images yet.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold text-primary mb-6" data-aos="fade-up">Want to be part of our story?</h2>
+        <p class="text-xl text-gray-600 mb-8" data-aos="fade-up" data-aos-delay="100">
+            Join us in our mission to create positive change in communities and industries
+        </p>
+        <a href="#contact" class="inline-flex items-center space-x-2 bg-primary text-white px-8 py-4 rounded-lg font-semibold hover:bg-primary/90 transition-all" data-aos="fade-up" data-aos-delay="200">
+            <span>Get Involved</span>
+            <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+</section>
+
+<!-- Lightbox Modal -->
+<div id="lightbox" class="lightbox">
+    <div class="lightbox-content">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="" class="w-full h-auto rounded-lg">
+        <div class="text-center mt-4">
+            <h3 id="lightbox-title" class="text-black text-xl font-semibold mb-2"></h3>
+            <p id="lightbox-description" class="text-gray-800"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Gallery filtering functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxTitle = document.getElementById('lightbox-title');
+        const lightboxDescription = document.getElementById('lightbox-description');
+        const lightboxClose = document.querySelector('.lightbox-close');
+
+        // Filter functionality
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterBtns.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
+                const filter = btn.dataset.filter;
+                
+                galleryItems.forEach(item => {
+                    const tags = (item.dataset.tags || '').split(' ').filter(Boolean);
+                    if (filter === 'all' || tags.includes(filter)) {
+                        item.style.display = 'block';
+                        item.style.animation = 'fadeIn 0.5s ease-in-out';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Lightbox functionality
+        galleryItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const img = item.querySelector('img');
+                const overlay = item.querySelector('.gallery-overlay');
+                const title = overlay.querySelector('h3').textContent;
+                const description = overlay.querySelector('p').textContent;
+                
+                lightboxImg.src = img.src;
+                lightboxImg.alt = img.alt;
+                lightboxTitle.textContent = title;
+                lightboxDescription.textContent = description;
+                
+                lightbox.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        // Close lightbox
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        function closeLightbox() {
+            lightbox.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close lightbox with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+    });
+
+    // Add fadeIn animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+{% endblock %}

@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% block title %}CJONYX - Events{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative pt-32 pb-24 bg-gradient-to-r from-primary to-secondary text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6" data-aos="fade-up">
+                Events
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-100 max-w-3xl mx-auto mb-8" data-aos="fade-up" data-aos-delay="100">
+                Upcoming, ongoing, and past events from our programs
+            </p>
+        </div>
+    </div>
+    <div class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent"></div>
+</section>
+
+<!-- Events Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="mb-8">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else category }} bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded mb-2" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% if events %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for event in events %}
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 100 }}">
+                        <!-- Event Image -->
+                        {% if event.image_url %}
+                            <div class="w-full h-56 bg-gray-50 flex items-center justify-center p-4">
+                                <img src="{{ event.image_url }}" alt="{{ event.title }}" class="max-h-full max-w-full object-contain">
+                            </div>
+                        {% else %}
+                            <div class="w-full h-56 bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
+                                <i class="fas fa-calendar-alt text-6xl text-white opacity-50"></i>
+                            </div>
+                        {% endif %}
+
+                        <!-- Event Content -->
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center text-sm text-gray-500">
+                                    <i class="fas fa-calendar mr-2"></i>
+                                    <span>{% if event.start_datetime %}{{ event.start_datetime.strftime('%b %d, %Y') }}{% elif event.event_date %}{{ event.event_date.strftime('%b %d, %Y') }}{% else %}TBA{% endif %}</span>
+                                </div>
+                                <div class="flex items-center text-sm text-gray-500">
+                                    <i class="fas fa-clock mr-2"></i>
+                                    <span>{% if event.start_datetime %}{{ event.start_datetime.strftime('%I:%M %p') }}{% elif event.event_date %}{{ event.event_date.strftime('%I:%M %p') }}{% else %}TBA{% endif %}</span>
+                                </div>
+                            </div>
+
+                            <h3 class="text-xl font-bold text-gray-900 mb-3">{{ event.title }}</h3>
+                            <p class="text-gray-600 mb-4">{{ event.description[:120] + '...' if event.description|length > 120 else event.description }}</p>
+
+                            <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                                {% if event.location %}
+                                    <div class="flex items-center">
+                                        <i class="fas fa-map-marker-alt mr-2"></i>
+                                        <span>{{ event.location }}</span>
+                                    </div>
+                                {% endif %}
+                                {% if event.max_participants %}
+                                    <div class="flex items-center">
+                                        <i class="fas fa-users mr-2"></i>
+                                        <span>{{ event.registrations|length }}/{{ event.max_participants }} spots</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Registration Button -->
+                            <div class="flex items-center justify-between gap-2 flex-wrap">
+                                <div class="text-lg font-semibold text-primary">
+                                    {% if event.status %}
+                                        <span class="{{ 'text-yellow-600' if event.status == 'ongoing' else ('text-green-600' if event.status == 'upcoming' else 'text-gray-600') }}">{{ event.status|capitalize }}</span>
+                                    {% else %}
+                                        <span class="text-green-600">Upcoming</span>
+                                    {% endif %}
+                                </div>
+                                {% if event.allow_late_registration %}
+                                    <div class="text-sm ml-2">
+                                        <span class="tooltip inline-block">
+                                            <span class="px-2 py-1 text-xs rounded bg-indigo-100 text-indigo-800">Late Reg Allowed</span>
+                                            <span class="tooltip-text">Admin has enabled late registration: signups may be accepted even after the event starts or ends.</span>
+                                        </span>
+                                    </div>
+                                {% endif %}
+                                
+                                <div class="flex gap-2 flex-wrap">
+                                    <a href="{{ url_for('event_details', event_id=event.id) }}" class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-secondary/90 transition-all text-sm font-medium">
+                                        <i class="fas fa-eye mr-1"></i>View Details
+                                    </a>
+                                    
+                                    {% if session.user_id %}
+                                        {% set user_registered = event.registrations|selectattr('user_id', 'equalto', session.user_id)|list|length > 0 %}
+                                        {% if event.status == 'past' %}
+                                            <span class="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg text-sm font-medium">
+                                                <i class="fas fa-ban mr-1"></i>Event Ended
+                                            </span>
+                                        {% elif event.status == 'ongoing' %}
+                                            <span class="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-lg text-sm font-medium">
+                                                <i class="fas fa-stopwatch mr-1"></i>Ongoing - Registration Closed
+                                            </span>
+                                        {% elif user_registered %}
+                                            <span class="bg-green-100 text-green-800 px-4 py-2 rounded-lg text-sm font-medium">
+                                                <i class="fas fa-check mr-1"></i>Registered
+                                            </span>
+                                        {% elif event.max_participants and event.registrations|length >= event.max_participants %}
+                                            <span class="bg-red-100 text-red-800 px-4 py-2 rounded-lg text-sm font-medium">
+                                                <i class="fas fa-times mr-1"></i>Full
+                                            </span>
+                                        {% else %}
+                                            <form method="POST" action="{{ url_for('register_for_event', event_id=event.id) }}" class="inline">
+                                                <button type="submit" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-all text-sm font-medium">
+                                                    <i class="fas fa-plus mr-1"></i>Register
+                                                </button>
+                                            </form>
+                                        {% endif %}
+                                    {% else %}
+                                        {% if event.status == 'past' %}
+                                            <span class="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg text-sm font-medium">
+                                                <i class="fas fa-ban mr-1"></i>Event Ended
+                                            </span>
+                                        {% else %}
+                                            <a href="{{ url_for('login') }}" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-all text-sm font-medium">
+                                                <i class="fas fa-sign-in-alt mr-1"></i>Login
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <!-- No Events -->
+            <div class="text-center py-12">
+                <i class="fas fa-calendar-alt text-6xl text-gray-300 mb-4"></i>
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">No Events Yet</h3>
+                <p class="text-gray-600 mb-8">We're working on exciting events for you. Check back soon!</p>
+                <a href="{{ url_for('index') }}" class="bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 transition-all">
+                    <i class="fas fa-home mr-2"></i>Back to Home
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Newsletter Signup -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold text-primary mb-6" data-aos="fade-up">Stay Updated</h2>
+        <p class="text-xl text-gray-600 mb-8" data-aos="fade-up" data-aos-delay="100">
+            Subscribe to our newsletter to get notified about Events and workshops
+        </p>
+        <form method="POST" action="{{ url_for('subscribe') }}" class="max-w-md mx-auto flex flex-col sm:flex-row gap-4" data-aos="fade-up" data-aos-delay="200">
+            <input type="email" name="email" required 
+                   class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                   placeholder="Enter your email">
+            <button type="submit" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-all font-medium">
+                Subscribe
+            </button>
+        </form>
+    </div>
+</section>
+{% endblock %}
+

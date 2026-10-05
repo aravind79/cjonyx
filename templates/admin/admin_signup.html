@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block title %}CJONYX - Admin Signup{% endblock %}
+
+{% block content %}
+<section class="min-h-screen flex items-center justify-center bg-gradient-to-r from-primary to-secondary py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 bg-white rounded-lg shadow-2xl p-8">
+        
+        <!-- Logo & Heading -->
+        <div>
+            <div class="mx-auto h-16 w-auto flex justify-center mb-4">
+                <img class="h-16 w-auto" 
+                     src="{{ url_for('static', filename='images/Clogo.png') }}" 
+                     alt="CJONYX">
+            </div>
+
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                Admin Signup
+            </h2>
+
+            <p class="mt-2 text-center text-sm text-gray-600">
+                Create a secure administrator account
+            </p>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="space-y-2">
+                    {% for category, message in messages %}
+                        <div class="alert bg-{{ 'red' if category == 'error' else 'green' }}-50 border border-{{ 'red' if category == 'error' else 'green' }}-200 text-{{ 'red' if category == 'error' else 'green' }}-700 px-4 py-3 rounded" role="alert">
+                            <i class="fas fa-{{ 'exclamation' if category == 'error' else 'check' }}-circle mr-2"></i>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Signup Form -->
+        <form class="mt-8 space-y-6" method="POST">
+
+            <div class="rounded-md shadow-sm space-y-4">
+
+                <!-- Username -->
+                <div>
+                    <label for="username" class="sr-only">Username</label>
+                    <input id="username" 
+                           name="username" 
+                           type="text" 
+                           required
+                           class="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent sm:text-sm"
+                           placeholder="Admin Username">
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label for="email" class="sr-only">Email</label>
+                    <input id="email" 
+                           name="email" 
+                           type="email" 
+                           required
+                           class="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent sm:text-sm"
+                           placeholder="Admin Email">
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label for="password" class="sr-only">Password</label>
+                    <input id="password" 
+                           name="password" 
+                           type="password" 
+                           required
+                           class="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent sm:text-sm"
+                           placeholder="Password">
+                </div>
+
+                <!-- Confirm Password -->
+                <div>
+                    <label for="confirm_password" class="sr-only">Confirm Password</label>
+                    <input id="confirm_password" 
+                           name="confirm_password" 
+                           type="password" 
+                           required
+                           class="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent sm:text-sm"
+                           placeholder="Confirm Password">
+                </div>
+
+                <!-- Secret Key -->
+                <div>
+                    <label for="secret_key" class="sr-only">Secret Key</label>
+                    <input id="secret_key" 
+                           name="secret_key" 
+                           type="text" 
+                           required
+                           class="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent sm:text-sm"
+                           placeholder="Admin Secret Key">
+                </div>
+
+            </div>
+
+            <!-- Submit Button -->
+            <div>
+                <button type="submit" 
+                        class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all">
+
+                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                        <i class="fas fa-user-shield text-primary-lighter"></i>
+                    </span>
+
+                    Create Admin Account
+                </button>
+            </div>
+
+            <!-- Login Redirect -->
+            <div class="text-center">
+                <p class="text-sm text-gray-600">
+                    Already have an admin account?
+                    <a href="{{ url_for('admin_login') }}" 
+                       class="font-medium text-primary hover:text-primary/80">
+                        Admin Login
+                    </a>
+                </p>
+            </div>
+
+        </form>
+
+        <!-- Info Box -->
+        <div class="mt-6 pt-6 border-t border-gray-200">
+            <div class="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded text-sm">
+                <i class="fas fa-shield-alt mr-2"></i>
+                <strong>Restricted Registration</strong>
+                <p class="mt-1">
+                    Only authorized personnel with a valid admin secret key can create administrator accounts.
+                </p>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

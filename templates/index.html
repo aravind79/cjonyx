@@ -1,0 +1,997 @@
+{% extends "base.html" %}
+{% block title %}CJONYX - Homepage{% endblock %}
+
+{% block extra_css %}
+<!-- Base Styles -->
+<link rel="stylesheet" href="/static/css/base.css">
+<style>
+    /* Reset and base styles */
+    html, body {
+        width: 100%;
+        max-width: 100%;
+        min-height: 100vh;
+        font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+        background: #fff;
+        color: #222;
+        overflow-x: hidden;
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+        position: relative;
+    }
+    *, *::before, *::after {
+        box-sizing: inherit;
+    }
+    .max-w-7xl, .mx-auto, .slider-bg, .slider-container, section, .grid, .flex {
+        width: 100%;
+        max-width: 100%;
+    }
+    img, .slide-img, .partner-logo img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+    .content-overlay {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    /* Initial state and GPU hints */
+    body:not(.loaded) {
+        overflow-x: hidden;
+        width: 100%;
+    }
+    body.resizing {
+        overflow-x: hidden;
+    }
+    .slider-bg,
+    .slider-container,
+    .content-overlay {
+        transform: translateZ(0);
+        backface-visibility: hidden;
+    }
+    /* Responsive styles */
+    @media (max-width: 1024px) {
+        .content-overlay, .max-w-7xl, .mx-auto {
+            padding: 2rem;
+        }
+    }
+    @media (max-width: 768px) {
+        body {
+            overflow-x: hidden;
+        }
+        .slider-bg {
+            flex-direction: column !important;
+            min-height: 100vh;
+        }
+        .max-w-7xl.mx-auto {
+            padding: 0 1rem;
+        }
+        .content-overlay {
+            padding: 1.25rem;
+            margin: 0 0.5rem;
+        }
+        h1, .hero-text {
+            font-size: 2rem !important;
+            text-align: left !important;
+        }
+        /* ...other mobile styles, minimal !important... */
+    }
+    @media (max-width: 480px) {
+        .content-overlay {
+            padding: 0.75rem;
+        }
+    }
+</style>
+<link rel="stylesheet" href="/static/css/responsive.css">
+{% endblock %}
+
+{% block content %}
+
+    <!-- Navigation -->
+   
+    <!-- Hero Section with Dynamic Text -->
+        <section id="home" class="slider-bg min-h-screen flex items-center justify-center relative overflow-hidden">
+            <!-- Slider Images as Background -->
+            <div class="slider-container absolute inset-0 w-full h-full z-0">
+                <div class="slide active absolute inset-0 w-full h-full" data-title="Promoting Success, Cultivating Growth." data-desc="CJONYX delivers innovative solutions that drive growth and create lasting impact.">
+                    <img src="../static/images/image1.png" class="slide-img w-full h-full object-cover" alt="Business Solutions" loading="lazy" data-src="../static/images/image1.png">
+                </div>
+                <div class="slide absolute inset-0 w-full h-full" data-title="Professional Team, Lasting Impact." data-desc="Our team brings expertise and passion to every project, ensuring your success.">
+                    <img src="../static/images/image2.jpeg" class="slide-img w-full h-full object-cover" alt="Professional Team" loading="lazy" data-src="../static/images/image2.jpeg">
+                </div>
+                <div class="slide absolute inset-0 w-full h-full" data-title="Innovation for the Future." data-desc="We embrace innovation to create sustainable solutions for tomorrow.">
+                    <img src="../static/images/image3.jpeg" class="slide-img w-full h-full object-cover" alt="Innovation" loading="lazy" data-src="../static/images/image3.jpeg">
+                </div>
+                <!-- Overlay gradient for readability -->
+                <div class="absolute inset-0 bg-gradient-to-br from-black/60 via-primary/40 to-black/70 z-10"></div>
+            </div>
+
+            <!-- Navigation Arrows -->
+            <div class="slider-arrow prev absolute left-8 top-1/2 transform -translate-y-1/2 z-20 cursor-pointer bg-black/40 hover:bg-primary/80 rounded-full p-3 transition">
+                <i class="fas fa-chevron-left text-white text-2xl"></i>
+            </div>
+            <div class="slider-arrow next absolute right-8 top-1/2 transform -translate-y-1/2 z-20 cursor-pointer bg-black/40 hover:bg-primary/80 rounded-full p-3 transition">
+                <i class="fas fa-chevron-right text-white text-2xl"></i>
+            </div>
+            <!-- Navigation Dots -->
+            <div class="slider-controls absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex gap-3"></div>
+
+            <!-- Dynamic Hero Content -->
+            <div class="relative z-20 w-full flex items-center justify-center min-h-[400px]">
+                <div class="max-w-4xl w-full px-6 py-16 mx-auto text-center lg:text-left flex flex-col items-center lg:items-start gap-8">
+                    <h1 id="hero-title" class="text-4xl md:text-6xl font-extrabold text-white mb-6 drop-shadow-lg animate-fade-in">
+                        <span class="hero-text block">Promoting Success, Cultivating Growth.</span>
+                    </h1>
+                    <p id="hero-desc" class="text-lg md:text-2xl text-white/80 mb-8 max-w-2xl animate-fade-in">
+                        CJONYX delivers innovative solutions that drive growth and create lasting impact.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-6 w-full justify-center lg:justify-start animate-fade-in">
+                        <a href="#services" class="bg-primary text-white px-8 py-4 rounded-lg font-semibold shadow-lg hover:bg-primary/90 transition-all text-lg">
+                            Explore Our Services
+                        </a>
+                        <a href="#contact" class="bg-white text-primary px-8 py-4 rounded-lg font-semibold shadow-lg hover:bg-gray-100 transition-all text-lg">
+                            Schedule a Consultation
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+  <section id="what-we-do" class="py-24 bg-gradient-to-b from-gray-50 to-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center max-w-3xl mx-auto mb-16" data-aos="fade-up">
+                <h2 class="text-4xl md:text-5xl font-bold text-primary mb-6">What We Do?</h2>
+                <p class="text-xl md:text-2xl text-gray-600">We make a positive impact on our community</p>
+                <div class="w-24 h-1 bg-secondary mx-auto mt-6"></div>
+            </div>
+
+            <!-- Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+                <!-- Entrepreneurship Development Card -->
+                <div class="service-card rounded-xl p-8" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex items-start space-x-6">
+                        <div class="w-16 h-16 bg-primary bg-opacity-10 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-handshake text-primary text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Entrepreneurship Development</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                We equip founders and growth-stage businesses with practical tools, coaching, and strategy support
+                                to launch, scale, and build resilient enterprises.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Green Industry Development and Eco Innovation Card -->
+                <div class="service-card rounded-xl p-8" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex items-start space-x-6">
+                        <div class="w-16 h-16 bg-secondary bg-opacity-10 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-leaf text-secondary text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Green Industry Development and Eco Innovation</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                We support eco-focused enterprises and circular solutions that reduce waste, improve resource efficiency,
+                                and create sustainable economic opportunities.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Community Industry Activation Card -->
+                <div class="service-card rounded-xl p-8" data-aos="fade-up" data-aos-delay="300">
+                    <div class="flex items-start space-x-6">
+                        <div class="w-16 h-16 bg-accent bg-opacity-10 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-users-cog text-accent text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Community Industry Activation powered by Value Addition</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                We activate local value chains by helping communities convert raw potential into market-ready products,
+                                jobs, and inclusive enterprise growth.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Community Need Assessment Card -->
+                <div class="service-card rounded-xl p-8" data-aos="fade-up" data-aos-delay="400">
+                    <div class="flex items-start space-x-6">
+                        <div class="w-16 h-16 bg-yellow-500 bg-opacity-10 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-users text-yellow-600 text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Community Need Assessment</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                We work with stakeholders to identify priority needs, map local capacities, and define clear interventions
+                                that respond to real community realities.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Baseline Studies Card -->
+                <div class="service-card rounded-xl p-8" data-aos="fade-up" data-aos-delay="500">
+                    <div class="flex items-start space-x-6">
+                        <div class="w-16 h-16 bg-indigo-500 bg-opacity-10 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-chart-line text-indigo-600 text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Project Baseline Studies</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                We establish credible baseline data at project start to guide planning, set measurable targets,
+                                and enable accurate performance tracking over time.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Impact Measurement and Management Card -->
+                <div class="service-card rounded-xl p-8" data-aos="fade-up" data-aos-delay="600">
+                    <div class="flex items-start space-x-6">
+                        <div class="w-16 h-16 bg-emerald-500 bg-opacity-10 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-bullseye text-emerald-600 text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Impact Measurement and Management</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                We design impact frameworks and performance indicators that help organizations measure outcomes,
+                                improve decisions, and strengthen accountability.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Monitoring, Evaluation and Learning Card -->
+                <div class="service-card rounded-xl p-8" data-aos="fade-up" data-aos-delay="700">
+                    <div class="flex items-start space-x-6">
+                        <div class="w-16 h-16 bg-rose-500 bg-opacity-10 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-clipboard-check text-rose-600 text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Project Monitoring, Evaluation and Learning</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                We provide end-to-end MEL systems that track progress, evaluate results, and turn evidence into
+                                practical learning for continuous project improvement.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Button -->
+            <div class="text-center mt-12" data-aos="fade-up" data-aos-delay="500">
+                <a href="#contact" class="inline-flex items-center space-x-2 bg-primary text-white px-8 py-4 rounded-lg font-semibold hover:bg-primary/90 transition-all shadow-lg hover:shadow-xl">
+                    <span>Start Your Journey With Us</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+    <!-- Services Section -->
+    <section id="services" class="py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-4xl font-bold text-primary mb-6">Solutions That Drive Growth</h2>
+                <div class="w-24 h-1 bg-secondary mx-auto mb-6"></div>
+                <p class="text-xl text-gray-600">Comprehensive business solutions tailored to meet your unique challenges</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service Cards with enhanced styling -->
+                <div class="card-hover bg-white rounded-xl p-8 border border-gray-100">
+                    <div class="w-16 h-16 mx-auto mb-6 bg-primary bg-opacity-10 rounded-full flex items-center justify-center">
+                        <i class="fas fa-handshake text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4 text-gray-900">Entrepreneurship Development</h3>
+                    <p class="text-gray-600">We equip founders and growth-stage businesses with practical tools, coaching, and strategy support to launch and scale.</p>
+                </div>
+
+                <div class="card-hover bg-white rounded-xl p-8 border border-gray-100">
+                    <div class="w-16 h-16 mx-auto mb-6 bg-secondary bg-opacity-10 rounded-full flex items-center justify-center">
+                        <i class="fas fa-leaf text-secondary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4 text-gray-900">Green Industry Development and Eco Innovation</h3>
+                    <p class="text-gray-600">We support eco-focused enterprises and circular solutions that reduce waste and create sustainable economic opportunities.</p>
+                </div>
+
+                <div class="card-hover bg-white rounded-xl p-8 border border-gray-100">
+                    <div class="w-16 h-16 mx-auto mb-6 bg-accent bg-opacity-10 rounded-full flex items-center justify-center">
+                        <i class="fas fa-users-cog text-accent text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4 text-gray-900">Community Industry Activation powered by Value Addition</h3>
+                    <p class="text-gray-600">We activate local value chains by helping communities transform local resources into market-ready products and jobs.</p>
+                </div>
+
+                <div class="card-hover bg-white rounded-xl p-8 border border-gray-100">
+                    <div class="w-16 h-16 mx-auto mb-6 bg-yellow-500 bg-opacity-10 rounded-full flex items-center justify-center">
+                        <i class="fas fa-users text-yellow-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4 text-gray-900">Community Need Assessment</h3>
+                    <p class="text-gray-600">We identify priority needs and local capacities through inclusive engagement to shape realistic and effective interventions.</p>
+                </div>
+
+                <div class="card-hover bg-white rounded-xl p-8 border border-gray-100">
+                    <div class="w-16 h-16 mx-auto mb-6 bg-indigo-500 bg-opacity-10 rounded-full flex items-center justify-center">
+                        <i class="fas fa-chart-line text-indigo-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4 text-gray-900">Project Baseline Studies</h3>
+                    <p class="text-gray-600">We establish baseline data and benchmarks that support planning, target-setting, and credible project performance tracking.</p>
+                </div>
+
+                <div class="card-hover bg-white rounded-xl p-8 border border-gray-100">
+                    <div class="w-16 h-16 mx-auto mb-6 bg-emerald-500 bg-opacity-10 rounded-full flex items-center justify-center">
+                        <i class="fas fa-bullseye text-emerald-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4 text-gray-900">Impact Measurement and Management</h3>
+                    <p class="text-gray-600">We define impact metrics and management systems that help organizations track outcomes and improve results.</p>
+                </div>
+
+                <div class="card-hover bg-white rounded-xl p-8 border border-gray-100">
+                    <div class="w-16 h-16 mx-auto mb-6 bg-rose-500 bg-opacity-10 rounded-full flex items-center justify-center">
+                        <i class="fas fa-clipboard-check text-rose-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4 text-gray-900">Project Monitoring, Evaluation and Learning</h3>
+                    <p class="text-gray-600">We build MEL frameworks that monitor progress, evaluate impact, and convert insights into continuous improvement.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-gradient-to-b from-gray-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <!-- Left Column: Join Community -->
+            <div class="bg-white rounded-2xl p-8 shadow-xl" data-aos="fade-right">
+                <h2 class="text-3xl font-bold text-primary mb-6">Come Join Us</h2>
+                <p class="text-gray-600 text-lg mb-6">
+                    Partner with us to develop new products, source sustainable solutions, improve business operations, and contribute to social and environmental causes.
+                </p>
+                <div class="space-y-4 mb-8">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center">
+                            <i class="fas fa-check text-secondary"></i>
+                        </div>
+                        <span class="text-gray-700">Develop innovative products</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center">
+                            <i class="fas fa-check text-secondary"></i>
+                        </div>
+                        <span class="text-gray-700">Source sustainable solutions</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center">
+                            <i class="fas fa-check text-secondary"></i>
+                        </div>
+                        <span class="text-gray-700">Improve business operations</span>
+                    </div>
+                </div>
+                <a href="#contact" class="inline-flex items-center space-x-2 bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-all">
+                    <span>Build a Better Future Today</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <!-- Right Column: Events -->
+            <div class="bg-primary rounded-2xl p-8 text-white" data-aos="fade-left">
+                <h2 class="text-3xl font-bold mb-6">EVENTS</h2>
+                <p class="text-lg mb-8">
+                    {% if event_feed_type == 'upcoming' %}
+                        Upcoming events for our community and partners.
+                    {% elif event_feed_type == 'ongoing' %}
+                        Ongoing events currently running.
+                    {% elif event_feed_type == 'past' %}
+                        Recent past events from our activities.
+                    {% else %}
+                        We organize inclusive events for Community & Businesses.
+                    {% endif %}
+                </p>
+                
+                <!-- Event Cards -->
+                <div class="space-y-4">
+                    {% if events %}
+                        {% for event in events %}
+                        <div class="bg-white/10 rounded-xl p-6 backdrop-blur-sm hover:bg-white/20 transition-all cursor-pointer">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-16 h-16 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-calendar-alt text-2xl"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="text-xl font-semibold mb-2">{{ event.title }}</h3>
+                                    {% if event.status %}
+                                    <div class="mb-2">
+                                        <span class="inline-block px-2 py-1 text-xs rounded {{ 'bg-yellow-100 text-yellow-900' if event.status == 'ongoing' else ('bg-green-100 text-green-900' if event.status == 'upcoming' else 'bg-gray-100 text-gray-900') }}">
+                                            {{ event.status|capitalize }}
+                                        </span>
+                                    </div>
+                                    {% endif %}
+                                    {% if event.allow_late_registration %}
+                                    <div class="mt-2">
+                                        <span class="tooltip inline-block">
+                                            <span class="inline-block px-2 py-1 text-xs rounded bg-indigo-100 text-indigo-800">Late Reg Allowed</span>
+                                            <span class="tooltip-text">Admin has enabled late registration: signups may be accepted even after the event starts or ends.</span>
+                                        </span>
+                                    </div>
+                                    {% endif %}
+                                    <p class="text-white/80 mb-3">{{ event.description[:100] }}{% if event.description|length > 100 %}...{% endif %}</p>
+                                    <div class="space-y-2">
+                                        <div class="flex items-center space-x-2 text-sm">
+                                            <i class="fas fa-clock"></i>
+                                                   <span>{% if event.start_datetime %}{{ event.start_datetime.strftime('%B %d, %Y at %I:%M %p') }}{% elif event.event_date %}{{ event.event_date.strftime('%B %d, %Y at %I:%M %p') }}{% else %}TBA{% endif %}</span>
+                                        </div>
+                                        {% if event.location %}
+                                        <div class="flex items-center space-x-2 text-sm">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            <span>{{ event.location }}</span>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    {% if 'user_id' in session %}
+                                    <div class="mt-4">
+                                        <a href="{{ url_for('events') }}#register-{{ event.id }}" 
+                                           class="bg-white text-primary px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-100 transition-all">
+                                            Register Now
+                                        </a>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="bg-white/10 rounded-xl p-6 backdrop-blur-sm text-center">
+                            <div class="w-16 h-16 bg-white/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-calendar-times text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">No Events Available</h3>
+                            <p class="text-white/80">No upcoming, ongoing, or past events are available at the moment.</p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- View All Events Button -->
+                {% if events %}
+                <div class="mt-6">
+                    <a href="{{ url_for('events') }}" 
+                       class="inline-flex items-center space-x-2 bg-white/20 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/30 transition-all">
+                        <span>View All Events</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                {% endif %}
+
+                <!-- Subscribe for Events -->
+                <div class="mt-8">
+                    <form id="newsletter-form" class="flex gap-2" action="{{ url_for('subscribe') }}" method="POST">
+                        <input type="email" 
+                               name="email"
+                               placeholder="Enter your email for updates" 
+                               class="flex-1 px-4 py-2 rounded-lg bg-white/10 border border-white/20 placeholder-white/60 focus:outline-none focus:border-white"
+                               required>
+                               </br>
+                        <button type="submit" 
+                                class="bg-white text-primary px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-all">
+                            Subscribe
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Stats Section (New) -->
+    <section class="bg-primary py-16" id="stats">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="text-white">
+                    <div class="text-4xl font-bold mb-2 animate-number" data-target="7">7+</div>
+                    <div class="text-gray-400">Years Experience</div>
+                </div>
+                <div class="text-white">
+                    <div class="text-4xl font-bold mb-2 animate-number" data-target="100">100+</div>
+                    <div class="text-gray-400">Projects Completed</div>
+                </div>
+                <div class="text-white">
+                    <div class="text-4xl font-bold mb-2 animate-number" data-target="50">50+</div>
+                    <div class="text-gray-400">Happy Clients</div>
+                </div>
+                <div class="text-white">
+                    <div class="text-4xl font-bold mb-2 animate-number" data-target="30">30+</div>
+                    <div class="text-gray-400">Awards Won</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section with enhanced layout -->
+    <section id="about" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">We Transform Challenges into Opportunities</h2>
+                    <p class="text-lg text-gray-600 mb-6">
+                        CJONYX is a reputable Nigerian company that commenced operations in January 2017. We take pride in our innovative and proactive approach to business, and we are duly registered under the Companies and Allied Matters Decree of the Federal Republic of Nigeria.
+                    </p>
+                    <p class="text-lg text-gray-600 mb-8">
+                        Our commitment to exceptional service delivery has earned us a noteworthy reputation as a dependable partner for training, procurement, management consulting, contracting, and other associated services.
+                    </p>
+                </div>
+                <div class="relative">
+                    <div class="bg-gradient-to-r from-primary to-secondary rounded-2xl p-8 text-white">
+                        <h3 class="text-2xl font-bold mb-4">Come Join Us</h3>
+                        <p class="mb-6">Partner with us to develop new products, source sustainable solutions, improve business operations, and contribute to social and environmental causes.</p>
+                        <a href="#contact" class="bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-block">
+                            Build a Better Future Today
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section (New) -->
+    <section class="bg-secondary py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-8">Ready to Transform Your Business?</h2>
+            <a href="#contact" class="bg-white text-secondary px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-all inline-block">
+                Get Started Today
+            </a>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Meet Our Team</h2>
+                <p class="text-lg text-gray-600">Our Expert Volunteers</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Team Member 1 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden text-center group">
+                    <div class="relative h-80 overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-primary/50"></div>
+                        <img src="{{ url_for('static', filename='images/shula.jpeg') }}" 
+                             alt="Mrs. Shulammite P." 
+                             class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 relative bg-white">
+                        <div class="mt-[-60px] mb-4">
+                            <div class="w-24 h-24 mx-auto rounded-full border-4 border-white overflow-hidden">
+                                <img src="{{ url_for('static', filename='images/shula.jpeg') }}" 
+                                     alt="Mrs. Shulammite P." 
+                                     class="w-full h-full object-cover object-center">
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Mrs. Shulammite P.</h3>
+                        <p class="text-primary font-medium mb-4">MD / CEO</p>
+                        <div class="flex justify-center space-x-3">
+                            <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Member 2 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden text-center group">
+                    <div class="relative h-80 overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-secondary/50"></div>
+                        <img src="{{ url_for('static', filename='images/ani.jpeg') }}" 
+                             alt="Emmanuel Ani" 
+                             class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 relative bg-white">
+                        <div class="mt-[-60px] mb-4">
+                            <div class="w-24 h-24 mx-auto rounded-full border-4 border-white overflow-hidden">
+                                <img src="{{ url_for('static', filename='images/ani.jpeg') }}" 
+                                     alt="Emmanuel Ani" 
+                                     class="w-full h-full object-cover object-center">
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Emmanuel Ani</h3>
+                        <p class="text-secondary font-medium mb-4">Team Lead - Eco Production & Micro Energy Development</p>
+                        <div class="flex justify-center space-x-3">
+                            <a href="#" class="text-gray-400 hover:text-secondary transition-colors">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-secondary transition-colors">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Team Member 3 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden text-center group">
+                    <div class="relative h-80 overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-secondary/50"></div>
+                        <img src="{{ url_for('static', filename='images/sarah.jpeg') }}" 
+                             alt="Emmanuel Ani" 
+                             class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 relative bg-white">
+                        <div class="mt-[-60px] mb-4">
+                            <div class="w-24 h-24 mx-auto rounded-full border-4 border-white overflow-hidden">
+                                <img src="{{ url_for('static', filename='images/sarah.jpeg') }}" 
+                                     alt="Emmanuel Ani" 
+                                     class="w-full h-full object-cover object-center">
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Mrs Sarah Duguri
+</h3>
+                        <p class="text-secondary font-medium mb-4">Director Administration and Finance</p>
+                        <div class="flex justify-center space-x-3">
+                            <a href="#" class="text-gray-400 hover:text-secondary transition-colors">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-secondary transition-colors">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+<!-- Team Member 4 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden text-center group">
+                    <div class="relative h-80 overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-secondary/50"></div>
+                        <img src="{{ url_for('static', filename='images/stan.jpeg') }}" 
+                             alt="Emmanuel Ani" 
+                             class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 relative bg-white">
+                        <div class="mt-[-60px] mb-4">
+                            <div class="w-24 h-24 mx-auto rounded-full border-4 border-white overflow-hidden">
+                                <img src="{{ url_for('static', filename='images/stan.jpeg') }}" 
+                                     alt="Emmanuel Ani" 
+                                     class="w-full h-full object-cover object-center">
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Stanley Emegbusim
+</h3>
+                        <p class="text-secondary font-medium mb-4">Business Development, Community Reseach and Data Team Lead</p>
+                        <div class="flex justify-center space-x-3">
+                            <a href="#" class="text-gray-400 hover:text-secondary transition-colors">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-secondary transition-colors">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div><!-- Team Member 5 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden text-center group">
+                    <div class="relative h-80 overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-secondary/50"></div>
+                        <img src="{{ url_for('static', filename='images/onyx.jpg') }}" 
+                             alt="Emmanuel Ani" 
+                             class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 relative bg-white">
+                        <div class="mt-[-60px] mb-4">
+                            <div class="w-24 h-24 mx-auto rounded-full border-4 border-white overflow-hidden">
+                                <img src="{{ url_for('static', filename='images/onyx.jpg') }}" 
+                                     alt="Emmanuel Ani" 
+                                     class="w-full h-full object-cover object-center">
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-900">Ms. Onyx-Chelsea Ifechimerem
+</h3>
+                        <p class="text-secondary font-medium mb-4">Digital literacy expert
+and Hub coordinator</p>
+                        <div class="flex justify-center space-x-3">
+                            <a href="#" class="text-gray-400 hover:text-secondary transition-colors">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-secondary transition-colors">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Join Team Card -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden text-center group">
+                <div class="relative h-80 bg-gradient-to-br from-gray-400 to-gray-500 flex items-center justify-center">
+                    <div class="w-32 h-32 bg-white/20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-plus text-white text-4xl"></i>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-900">Join Our Team</h3>
+                    <p class="text-gray-600 font-medium mb-4">We're always looking for talented individuals</p>
+                    <a href="#contact" class="inline-flex items-center space-x-2 text-primary hover:text-secondary transition-colors">
+                        <span>Get In Touch</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            </div>
+        </div>
+    </section>
+
+<!-- Partners Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-primary mb-4">Our Partners</h2>
+            <div class="w-24 h-1 bg-secondary mx-auto"></div>
+        </div>
+
+        <!-- Partners Logo Carousel -->
+        <div class="partners-carousel relative overflow-hidden">
+            <div class="flex animate-scroll">
+                <!-- First set of logos -->
+                <div class="partner-logo min-w-[200px] mx-8">
+                    <img src="../static/images/base.png" 
+                         alt="Baze University" 
+                         class="h-20 object-contain filter grayscale hover:grayscale-0 transition-all">
+                </div>
+                <div class="partner-logo min-w-[200px] mx-8">
+                    <img src="../static/images/logo2.jpeg" 
+                         alt="UNIDO" 
+                         class="h-20 object-contain filter grayscale hover:grayscale-0 transition-all">
+                </div>
+                <div class="partner-logo min-w-[200px] mx-8">
+                    <img src="../static/images/logo3.jpg" 
+                         alt="Partner Logo" 
+                         class="h-20 object-contain filter grayscale hover:grayscale-0 transition-all">
+                </div>
+                <div class="partner-logo min-w-[200px] mx-8">
+                    <img src="../static/images/logo4.png" 
+                         alt="Partner Logo" 
+                         class="h-20 object-contain filter grayscale hover:grayscale-0 transition-all">
+                </div>
+                <!-- Duplicate logos for seamless loop -->
+                <div class="partner-logo min-w-[200px] mx-8">
+                    <img src="../static/images/logo2.jpeg" 
+                         alt="Baze University" 
+                         class="h-20 object-contain filter grayscale hover:grayscale-0 transition-all">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+ 
+
+    <!-- <div class="fixed bottom-8 right-8 z-50">-->
+    <!--    <button class="bg-secondary hover:bg-accent text-white rounded-full p-4 shadow-lg pulse">-->
+    <!--        <i class="fas fa-comment text-xl"></i>-->
+    <!--    </button>-->
+    <!--</div> -->
+
+    <!-- Simple Success/Error Message Display -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="fixed top-20 right-4 z-50 space-y-2">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} bg-white border-l-4 {% if category == 'success' %}border-green-500 text-green-700{% elif category == 'error' %}border-red-500 text-red-700{% else %}border-blue-500 text-blue-700{% endif %} p-4 rounded shadow-lg max-w-sm">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                {% if category == 'success' %}
+                                    <i class="fas fa-check-circle text-green-500"></i>
+                                {% elif category == 'error' %}
+                                    <i class="fas fa-exclamation-circle text-red-500"></i>
+                                {% else %}
+                                    <i class="fas fa-info-circle text-blue-500"></i>
+                                {% endif %}
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium">{{ message }}</p>
+                            </div>
+                            <div class="ml-auto pl-3">
+                                <button onclick="this.parentElement.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- HTML Modal for Newsletter Subscription -->
+    <div id="newsletter-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+                <div class="flex items-center justify-between p-6 border-b">
+                    <h3 class="text-lg font-semibold text-gray-900">Newsletter Subscription</h3>
+                    <a href="#" onclick="document.getElementById('newsletter-modal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-xl"></i>
+                    </a>
+                </div>
+                
+                <div class="p-6">
+                    <div class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-green-100">
+                        <i class="fas fa-check text-3xl text-green-600"></i>
+                    </div>
+                    <p class="text-center text-gray-600 mb-6">Thank you for subscribing! You will receive updates about our events.</p>
+                    
+                    <div class="flex justify-center">
+                        <a href="#" onclick="document.getElementById('newsletter-modal').classList.add('hidden')" class="bg-primary text-white px-6 py-2 rounded-lg font-semibold hover:bg-primary/90 transition-all">
+                            OK
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cookie Banner -->
+
+    <!-- Cookie Banner -->
+    <div id="cookie-banner" class="fixed bottom-0 left-0 w-full bg-white shadow-lg p-4 transform translate-y-full transition-transform duration-300">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <p>We use cookies to enhance your experience.</p>
+            <button id="accept-cookies" class="bg-primary text-white px-4 py-2 rounded">Accept</button>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+      
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const navHeight = 64; // Height of fixed navigation
+                    const targetPosition = target.offsetTop - navHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+
+                    // Close mobile menu if open
+                    document.getElementById('mobile-menu').classList.add('hidden');
+                }
+            });
+        });
+
+        // Add navbar background on scroll
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('bg-white', 'shadow-lg');
+            } else {
+                nav.classList.remove('bg-white', 'shadow-lg');
+            }
+        });
+
+        // --- Consolidated Responsive JS ---
+document.addEventListener('DOMContentLoaded', function() {
+    // Preloader logic
+    setTimeout(function() {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+            preloader.style.opacity = '0';
+            setTimeout(() => preloader.style.display = 'none', 700);
+        }
+        // Responsive reflow
+        document.body.classList.add('loaded');
+        window.dispatchEvent(new Event('resize'));
+        document.body.offsetHeight;
+        if (window.scrollY === 0) {
+            window.scrollTo(0, 1);
+            setTimeout(() => window.scrollTo(0, 0), 50);
+        }
+        // Layout triggers
+        window.dispatchEvent(new Event('scroll'));
+        document.querySelectorAll('section').forEach((section) => {
+            section.classList.add('section-fade');
+        });
+        if (window.AOS) {
+            AOS.refreshHard();
+        }
+        // Initialize slider
+        if (typeof initSlider === 'function') {
+            initSlider();
+        }
+    }, 5000);
+
+    // Show/hide scroll to top button
+    const scrollBtn = document.querySelector('.fixed.bottom-8.right-8');
+    if (scrollBtn) {
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollBtn.style.opacity = '1';
+                scrollBtn.style.pointerEvents = 'auto';
+            } else {
+                scrollBtn.style.opacity = '0';
+                scrollBtn.style.pointerEvents = 'none';
+            }
+        });
+    }
+});
+window.addEventListener('resize', function() {
+    document.body.classList.add('resizing');
+    setTimeout(() => document.body.classList.remove('resizing'), 300);
+    // Reflow and layout triggers
+    window.dispatchEvent(new Event('scroll'));
+    document.querySelectorAll('section').forEach((section) => {
+        section.classList.add('section-fade');
+    });
+    if (window.AOS) {
+        AOS.refreshHard();
+    }
+});
+    </script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.body.classList.add('loaded');
+    setTimeout(function() {
+        window.dispatchEvent(new Event('resize'));
+        document.body.offsetHeight;
+        if (window.scrollY === 0) {
+            window.scrollTo(0, 1);
+            setTimeout(() => window.scrollTo(0, 0), 50);
+        }
+    }, 100);
+});
+window.addEventListener('resize', function() {
+    document.body.classList.add('resizing');
+    setTimeout(() => document.body.classList.remove('resizing'), 300);
+});
+</script>
+<script>
+(function() {
+    let autoScrollActive = true;
+    let scrollDirection = 1; // 1 = down, -1 = up
+    let scrollStep = 2; // px per frame
+    let scrollInterval;
+    function autoScroll() {
+        if (!autoScrollActive) return;
+        let maxScroll = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) - window.innerHeight;
+        if (scrollDirection === 1) {
+            window.scrollBy(0, scrollStep);
+            if (window.scrollY >= maxScroll - 10) scrollDirection = -1;
+        } else {
+            window.scrollBy(0, -scrollStep);
+            if (window.scrollY <= 0) scrollDirection = 1;
+        }
+        scrollInterval = requestAnimationFrame(autoScroll);
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        // Start auto scroll while preloader is visible
+        autoScrollActive = true;
+        autoScroll();
+        setTimeout(function() {
+            // Stop auto scroll and reset scroll position
+            autoScrollActive = false;
+            cancelAnimationFrame(scrollInterval);
+            window.scrollTo(0, 0);
+            // ...existing preloader hide and layout logic...
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                preloader.style.opacity = '0';
+                setTimeout(() => preloader.style.display = 'none', 700);
+            }
+            document.body.classList.add('loaded');
+            window.dispatchEvent(new Event('resize'));
+            document.body.offsetHeight;
+            window.dispatchEvent(new Event('scroll'));
+            document.querySelectorAll('section').forEach((section) => {
+                section.classList.add('section-fade');
+            });
+            if (window.AOS) {
+                AOS.refreshHard();
+            }
+            if (typeof initSlider === 'function') {
+                initSlider();
+            }
+        }, 5000);
+    });
+})();
+</script>   
+
+{% endblock %}

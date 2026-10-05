@@ -1,0 +1,172 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}CJONYX - {{ 'Edit Event' if event else 'New Event' }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-6">
+                <div class="flex items-center space-x-4">
+                    <a href="{{ url_for('admin_events') }}" class="text-gray-600 hover:text-primary">
+                        <i class="fas fa-arrow-left text-xl"></i>
+                    </a>
+                    <h1 class="text-3xl font-bold text-gray-900">{{ 'Edit Event' if event else 'Create New Event' }}</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="mb-6">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else category }} bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded mb-2" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" enctype="multipart/form-data" class="bg-white shadow rounded-lg p-6">
+            <div class="space-y-6">
+                <!-- Title -->
+                <div>
+                    <label for="title" class="block text-sm font-medium text-gray-700">Event Title</label>
+                    <input type="text" id="title" name="title" required 
+                           value="{{ event.title if event else '' }}"
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                           placeholder="Enter event title">
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea id="description" name="description" rows="4" required
+                              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                              placeholder="Describe your event">{{ event.description if event else '' }}</textarea>
+                </div>
+
+                <!-- Event Start / End Date and Time -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="start_datetime" class="block text-sm font-medium text-gray-700">Start Date & Time</label>
+                        <input type="datetime-local" id="start_datetime" name="start_datetime" required
+                               value="{{ event.start_datetime.strftime('%Y-%m-%dT%H:%M') if event and event.start_datetime else (event.event_date.strftime('%Y-%m-%dT%H:%M') if event and event.event_date else '') }}"
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm">
+                    </div>
+
+                    <div>
+                        <label for="end_datetime" class="block text-sm font-medium text-gray-700">End Date & Time (Optional)</label>
+                        <input type="datetime-local" id="end_datetime" name="end_datetime"
+                               value="{{ event.end_datetime.strftime('%Y-%m-%dT%H:%M') if event and event.end_datetime else '' }}"
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="max_participants" class="block text-sm font-medium text-gray-700">Max Participants (Optional)</label>
+                        <input type="number" id="max_participants" name="max_participants" min="1"
+                               value="{{ event.max_participants if event else '' }}"
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                               placeholder="Leave blank for unlimited">
+                    </div>
+
+                    <div>
+                        <label for="image-upload" class="block text-sm font-medium text-gray-700">Upload Image (optional)</label>
+                        <input type="file" id="image-upload" name="image-upload" accept="image/*" class="mt-1 block w-full text-sm text-gray-700">
+                        {% if event and event.image_url %}
+                        <div class="mt-2">
+                            <img src="{{ event.image_url }}" alt="Event image" class="w-32 h-20 object-cover rounded">
+                        </div>
+                        {% endif %}
+                        <div class="mt-2">
+                            <label for="image_url" class="block text-sm font-medium text-gray-700">Or Image URL</label>
+                            <input type="url" id="image_url" name="image_url" 
+                                   value="{{ event.image_url if event else '' }}"
+                                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                                   placeholder="https://example.com/event-image.jpg">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Location -->
+                <div>
+                    <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
+                    <input type="text" id="location" name="location" 
+                           value="{{ event.location if event else '' }}"
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                           placeholder="Event location (e.g., Conference Hall, Online)">
+                </div>
+
+                <!-- Image URL -->
+                <div>
+                    <label for="image_url" class="block text-sm font-medium text-gray-700">Event Image URL (Optional)</label>
+                    <input type="url" id="image_url" name="image_url" 
+                           value="{{ event.image_url if event else '' }}"
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                           placeholder="https://example.com/event-image.jpg">
+                </div>
+
+                <!-- Event Gallery (multiple images) -->
+                <div>
+                    <label for="gallery_images" class="block text-sm font-medium text-gray-700">Event Gallery Images (optional)</label>
+                    <input type="file" id="gallery_images" name="gallery_images" accept="image/*" multiple class="mt-1 block w-full text-sm text-gray-700">
+                    <p class="text-xs text-gray-500 mt-2">You can upload multiple images at once. Optionally add descriptions (one per line) in the box below; each line maps to an uploaded image by order.</p>
+                    <label for="gallery_descriptions" class="block text-sm font-medium text-gray-700 mt-3">Gallery Descriptions (one per line)</label>
+                    <textarea id="gallery_descriptions" name="gallery_descriptions" rows="4"
+                              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                              placeholder="Enter one description per line, matching the order of uploaded images"></textarea>
+                    {% if event and event.galleries.count() > 0 %}
+                    <div class="mt-3 grid grid-cols-3 gap-2">
+                        {% for img in event.galleries.order_by('created_at desc').limit(6).all() %}
+                        <div class="text-center">
+                            <img src="{{ img.image_url }}" alt="gallery" class="w-full h-24 object-cover rounded">
+                            {% if img.description %}<p class="text-xs text-gray-600 mt-1">{{ img.description }}</p>{% endif %}
+                            <form method="POST" action="{{ url_for('admin_delete_gallery', image_id=img.id) }}" onsubmit="return confirm('Delete this gallery image?')">
+                                <button type="submit" class="text-red-600 text-sm mt-1">Delete</button>
+                            </form>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Published Checkbox -->
+                <div class="flex items-center">
+                    <input type="checkbox" id="published" name="published" 
+                           {{ 'checked' if not event or event.published else '' }}
+                           class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                    <label for="published" class="ml-2 block text-sm text-gray-900">
+                        Publish event (make it visible to users)
+                    </label>
+                </div>
+
+                <!-- Allow Late Registration -->
+                <div class="flex items-center mt-2">
+                    <input type="checkbox" id="allow_late_registration" name="allow_late_registration" 
+                           {{ 'checked' if event and event.allow_late_registration else '' }}
+                           class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                    <label for="allow_late_registration" class="ml-2 block text-sm text-gray-900">
+                        Allow late registration (override closed status)
+                    </label>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">When enabled, users are permitted to register even if the event status is "ongoing" or "past". Use this to allow late signups or manual overrides (e.g., in-person signups).</p>
+
+                <!-- Submit Buttons -->
+                <div class="flex justify-between pt-6">
+                    <a href="{{ url_for('admin_events') }}" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 transition-all">
+                        Cancel
+                    </a>
+                    <button type="submit" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-primary/90 transition-all">
+                        <i class="fas fa-save mr-2"></i>{{ 'Update Event' if event else 'Create Event' }}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
