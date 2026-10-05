@@ -1058,25 +1058,25 @@ def event_details(event_id):
                          user_registered=user_registered,
                          event_images=event_images)
 
-if __name__ == '__main__':
-    with app.app_context():
-        # Create upload folder
-        create_upload_folder()
-        
-        # Create database tables
-        db.create_all()
-        
-        # Create admin user if it doesn't exist
-        admin_user = User.query.filter_by(username='admin').first()
-        if not admin_user:
-            admin_user = User(
-                username='admin',
-                email='admin@cjonyx.com',
-                password_hash=generate_password_hash('admin123'),
-                is_admin=True
-            )
-            db.session.add(admin_user)
-            db.session.commit()
-            print("Admin user created: username='admin', password='admin123'")
+with app.app_context():
+    # Create upload folder
+    create_upload_folder()
     
+    # Create database tables
+    db.create_all()
+    
+    # Create admin user if it doesn't exist
+    admin_user = User.query.filter_by(username='admin').first()
+    if not admin_user:
+        admin_user = User(
+            username='admin',
+            email='admin@cjonyx.com',
+            password_hash=generate_password_hash('admin123'),
+            is_admin=True
+        )
+        db.session.add(admin_user)
+        db.session.commit()
+        print("Admin user created: username='admin', password='admin123'")
+
+if __name__ == '__main__':
     app.run(debug=True)
